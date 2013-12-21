@@ -6,6 +6,7 @@ import ceylonfx.binding {
 	bindConverting
 }
 import ceylonfx.scene.paint { red }
+import ceylonfx.scene.control { CheckBox }
 
 shared test void propertiesCanBeBound() {
 	value checkBox = CheckBox();
