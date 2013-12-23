@@ -15,7 +15,7 @@ shared class CheckBox2 (
 	String initialText = "",
 	Boolean allowIndeterminate = false,
 	Paint textFill = black,
-	String tooltipText = "") 
+	Tooltip? tooltip = null) 
 		extends CeylonFxAdapter<JCheckBox>() {
 	
 	value delegate = JCheckBox(initialText);
@@ -24,7 +24,7 @@ shared class CheckBox2 (
 	shared ObjectProp<Boolean> allowIndeterminateProperty = booleanWrappedProperty(delegate.allowIndeterminateProperty(), allowIndeterminate);
 	shared ObjectProp<Paint> textFillProperty = paintWrappedProperty(delegate.textFillProperty(), textFill);
 	shared ObjectProp<String> textProperty = stringWrappedProperty(delegate.textProperty());
-	shared ObjectProp<Tooltip> tooltipProperty = tooltipWrappedProperty(delegate.tooltipProperty(), Tooltip{text = tooltipText;});
+	shared ObjectProp<Tooltip> tooltipProperty = tooltipWrappedProperty(delegate.tooltipProperty(), tooltip);
 
     // Here semantic is getDelegate
 	shared actual JCheckBox createDelegate() => delegate;

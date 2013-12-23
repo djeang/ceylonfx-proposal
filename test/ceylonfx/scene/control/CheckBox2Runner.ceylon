@@ -21,7 +21,15 @@ shared void run()
 		() => Scene {
 			dimension = [50.0, 50.0];
 			VBox {
-				CheckBox2(true,"My init text", true, red, "My Tooltip Text" )
+				CheckBox2{
+					selected =  true;
+					initialText = "My init text";
+					allowIndeterminate = true;
+					textFill = red;
+					tooltip = Tooltip {
+						text = "My Tooltip Text";
+					};
+				}
 			}
 		};
 	};
