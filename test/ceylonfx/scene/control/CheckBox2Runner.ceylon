@@ -18,10 +18,10 @@ shared void run()
 		=> CeylonFX {
 	args = process.arguments;
 	Stage {
-		Scene {
+		() => Scene {
 			dimension = [50.0, 50.0];
 			VBox {
-				CheckBox2(true,"My init text", true, red)
+				CheckBox2(true,"My init text", true, red, "My Tooltip Text" )
 			}
 		};
 	};

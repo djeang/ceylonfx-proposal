@@ -10,10 +10,10 @@ import javafx.stage {
 }
 
 "The Stage class is the top level CeylonFX container."
-shared class Stage(scene, stageStyle = decorated, title = "CeylonFX") {
+shared class Stage(sceneProvider, stageStyle = decorated, title = "CeylonFX") {
 	
 	shared StageStyle stageStyle;
-	shared Scene scene;
+	shared Scene() sceneProvider;
 	shared String title;
 	variable JStage? actual = null;
 	
@@ -23,7 +23,7 @@ shared class Stage(scene, stageStyle = decorated, title = "CeylonFX") {
 		if (exists delegate) {
 			actual = delegate;
 			delegate.title = title;
-			delegate.scene = scene.delegate;
+			delegate.scene = sceneProvider().delegate;
 		}
 		
 	}
