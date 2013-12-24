@@ -30,7 +30,10 @@ shared class Scene(
     
     shared ObjectProperty<Paint> fillProperty = ObjectProperty<Paint>(white);
     
-    shared actual JScene createDelegate() {
+    shared Cursor cursor => Cursor(delegate.cursor);
+    assign cursor => delegate.cursor=cursor.cursor;
+    
+    shared actual JScene delegate {
         Group root = Group();
         root.children.setAll(*asNodes(children));
         value jscene = JScene(root, dimension[0], dimension[1], depthBuffer);
@@ -40,8 +43,5 @@ shared class Scene(
         case (is Binding<Object, Paint>) { fill.bind(fillProperty); }
         return jscene;
     }
-    
-    shared Cursor cursor => Cursor(delegate.cursor);
-    assign cursor => delegate.cursor=cursor.cursor;
     
 }

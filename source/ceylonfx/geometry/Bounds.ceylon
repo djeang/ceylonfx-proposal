@@ -59,7 +59,7 @@ shared class BoundingBox(Location|Point3D location, Dimension|[Float, Float, Flo
 		return delegate.intersects(bounds.delegate);
 	}
 	
-	shared actual JBBox createDelegate() {
+	shared actual JBBox delegate {
 		switch(location)
 		case (is Location) {
 			if (exists depth = dimension[2]) {

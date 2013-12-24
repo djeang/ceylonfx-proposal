@@ -52,31 +52,8 @@ shared class CeylonFX(stage, Boolean showNow = true, String?* args) {
 shared abstract class CeylonFxAdapter<out Delegate>()
 		given Delegate satisfies Object {
 	
-	"""Creates the JavaFX delegate for this CeylonFxAdapter.
-	   This method will be called only once, the first time the delegate is required.
-	   Usually, that should occur when CeylonFX initializes the application, which always
-	   occurs in the JavaFX Thread.
-	   
-	   To just get the JavaFX delegate, use the ``delegate`` property (this method will
-	   be called automatically if the [[delegate]] had not been created yet).
-	   
-	   If calling this method directly, **make sure to do so from the JavaFX Thread.**"""
-	shared formal Delegate createDelegate();
-	
-	variable Delegate? instance = null;
-	
-	doc("Get the JavaFX delegate for this CeylonFxAdapter. The delegate will be created if necessary.")
-	see(`function createDelegate`)
-	shared Delegate delegate => lazyDelegate();
-	
-	Delegate lazyDelegate() {
-		if (exists delegate = instance) {
-			return delegate;
-		} else {
-			instance = createDelegate();
-			return lazyDelegate();
-		}
-	}
+	"""Get the JavaFX delegate for this CeylonFxAdapter."""
+	shared formal Delegate delegate;
 	
 }
 

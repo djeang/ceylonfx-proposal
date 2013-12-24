@@ -28,7 +28,7 @@ shared class VBox(
 	{Node|CeylonNode|VGrowNode*} children = [])
 		extends CeylonFxAdapter<JVBox>() {
 	
-	shared actual JVBox createDelegate() {
+	shared actual JVBox delegate {
 		value jvbox = JVBox();
 		jvbox.spacing = spacing.float;
 		jvbox.alignment = alignment.pos;

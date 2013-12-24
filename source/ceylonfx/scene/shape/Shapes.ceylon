@@ -111,7 +111,7 @@ shared class Rectangle(
 		fill, smooth, strokeDashOffset, strokeLineCap, strokeLineJoin,
 		strokeMiterLimit, stroke, strokeType, strokeWidth) {
 	
-	shared actual JRect createDelegate() {
+	shared actual JRect delegate {
 		value actual = JRect();
 		actual.width = dimension[0];
 		actual.height = dimension[1];

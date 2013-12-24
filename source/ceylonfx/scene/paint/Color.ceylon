@@ -7,7 +7,7 @@ import javafx.scene.paint {
 "The Color class is used to encapsulate colors in the default sRGB color space."
 shared class Color(JColor jColor) 
 		extends Paint() {
-	shared actual JColor createDelegate() => jColor;
+	shared actual JColor delegate => jColor;
 }
 
 "Creates a grey color."

@@ -32,7 +32,7 @@ shared object repeatCycle extends CycleMethod(JCycleMethod.\iREPEAT) {}
 shared object reflectCycle extends CycleMethod(JCycleMethod.\iREFLECT) {}
 
 {JStop*} jStops({Stop*} stops)
-		=> { for (elem in stops) JStop(elem[0], elem[1].createDelegate()) };
+		=> { for (elem in stops) JStop(elem[0], elem[1].delegate) };
 
 shared class LinearGradient(
 	Location start = [0.0, 0.0],
@@ -43,7 +43,7 @@ shared class LinearGradient(
 			{[0.0, white], [1.0, yellow]})
 		extends Paint() {
 	
-	shared actual JPaint createDelegate() => JLinearGrad(
+	shared actual JPaint delegate => JLinearGrad(
 		start[0], start[1],
 		end[0], end[1], 
 		proportional, 
@@ -64,7 +64,7 @@ shared class RadialGradient(
 			{[0.0, white], [1.0, yellow]}) 
 		extends Paint() {
 	
-	createDelegate() => JRadialGrad(
+	delegate => JRadialGrad(
 		focusAngle, focusDistance,
 		center[0], center[1], radius,
 		proportional,
@@ -80,7 +80,7 @@ shared class ImagePattern(
 	Boolean proportional = true)
 		extends Paint() {
 	
-	createDelegate() => JImagePattern(
+	delegate => JImagePattern(
 		image,
 		anchorLocation[0], anchorLocation[1],
 		anchorDimension[0], anchorDimension[1],

@@ -12,7 +12,7 @@ shared class Point3D(
 	shared Float y = 0.0,
 	shared Float z = 0.0) extends CeylonFxAdapter<JPoint3D>() {
 
-	shared actual JPoint3D createDelegate() => JPoint3D(x, y, z);
+	shared actual JPoint3D delegate => JPoint3D(x, y, z);
 
 	"Computes the distance between this point and the given point."
 	shared Float distance(Point3D point) {

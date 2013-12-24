@@ -20,7 +20,7 @@ import ceylonfx.binding.internal { bindToJavaFx }
 import ceylonfx.geometry.util { boundingBoxJ2C }
 
 "Base class for scene graph nodes."
-shared abstract class Node<out Delegate>(
+shared abstract class Node<out Delegate> (
 	shared String id = "",
 	shared String style = "",
 	shared BlendMode? blendMode = null,
@@ -69,7 +69,7 @@ shared abstract class Node<out Delegate>(
 	}
 	
 	object boundsInLocalProperty extends CeylonFxAdapter<Property<Bounds<JBounds>>>() {
-		shared actual Property<Bounds<JBounds>> createDelegate() {
+		shared actual Property<Bounds<JBounds>> delegate {
 			value property = ObjectProperty<Bounds<JBounds>>(BoundingBox([0.0, 0.0], [0.0, 0.0]));
 			bindToJavaFx(outer.delegate.boundsInLocalProperty(), property, boundingBoxJ2C);
 			return property;

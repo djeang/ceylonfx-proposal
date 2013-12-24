@@ -34,7 +34,7 @@ shared class CheckBox(
 	shared ObjectProperty<Paint> textFillProperty = ObjectProperty(textFill);
 	shared StringProperty textProperty = ObjectProperty(initialText);
 	
-	shared actual JCheckBox createDelegate() {
+	shared actual JCheckBox delegate {
 		value actualBox = JCheckBox(initialText);
 		actualBox.allowIndeterminate = allowIndeterminate;
 		glueProperties(actualBox);

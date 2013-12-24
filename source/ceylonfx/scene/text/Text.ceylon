@@ -47,7 +47,7 @@ shared class Text(
 		fill, smooth, strokeDashOffset, strokeLineCap, strokeLineJoin,
 		strokeMiterLimit, stroke, strokeType, strokeWidth) {
 	
-	shared actual JText createDelegate() {
+	shared actual JText delegate {
 		value jtext = JText(location[0], location[1], text);
 		jtext.font = font.font;
 		jtext.underline = underline;

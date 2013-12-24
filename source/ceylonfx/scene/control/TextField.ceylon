@@ -17,16 +17,13 @@ shared class TextField (
 	Paint textFill = black) 
 		extends CeylonFxAdapter<JCheckBox>() {
 	
-	value delegate = JCheckBox(initialText);
+	shared actual JCheckBox delegate => JCheckBox(initialText);
 		
 	shared ObjectProp<Boolean> selectedProperty = booleanWrappedProperty(delegate.selectedProperty(), selected);
 	shared ObjectProp<Boolean> allowIndeterminateProperty = booleanWrappedProperty(delegate.allowIndeterminateProperty(), allowIndeterminate);
 	shared ObjectProp<Paint> textFillProperty = paintWrappedProperty(delegate.textFillProperty(), textFill);
 	shared ObjectProp<String> textProperty = stringWrappedProperty(delegate.textProperty());
-
-    // Here semantic is getDelegate
-	shared actual JCheckBox createDelegate() => delegate;
-		
+	
 }
 
 

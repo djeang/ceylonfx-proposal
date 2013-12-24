@@ -62,7 +62,7 @@ shared object floatJ2C satisfies TypeConverter<JFloat, Float> {
 shared object paintJ2C satisfies TypeConverter<JPaint, Paint> {
 	shared actual Paint convert(JPaint from) {
 		object paint extends Paint() {
-			createDelegate() => from;
+			delegate => from;
 		}
 		return paint;
 	}
