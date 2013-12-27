@@ -2,5 +2,4 @@
 /classes
 *.class
 .ceylon
-.project
-.classpath
+
