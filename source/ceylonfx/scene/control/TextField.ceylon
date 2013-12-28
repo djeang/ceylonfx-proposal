@@ -1,28 +1,26 @@
-import ceylonfx.scene.paint {
-	Paint,
-	paintWrappedProperty,
-	black
+import ceylonfx.binding {
+	Unset,
+	unset
+}
+import ceylonfx.geometry {
+	Position
 }
 
 import javafx.scene.control {
-	JCheckBox=CheckBox
+	JTextField=TextField
 }
-import ceylonfx.binding { stringWrappedProperty, ObjectProp, booleanWrappedProperty }
-import ceylonfx.application { CeylonFxAdapter }
 
 shared class TextField (
-	Boolean selected = false,
-	String initialText = "",
-	Boolean allowIndeterminate = false,
-	Paint textFill = black) 
-		extends CeylonFxAdapter<JCheckBox>() {
+	Position|Unset position = unset,
+	Anything(TextField)|Unset onAction = unset, 
+	Integer|Unset prefColumCount = unset) 
+		extends TextInputControl() {
 	
-	shared actual JCheckBox delegate => JCheckBox(initialText);
+	
+	shared actual JTextField delegate = JTextField();
 		
-	shared ObjectProp<Boolean> selectedProperty = booleanWrappedProperty(delegate.selectedProperty(), selected);
-	shared ObjectProp<Boolean> allowIndeterminateProperty = booleanWrappedProperty(delegate.allowIndeterminateProperty(), allowIndeterminate);
-	shared ObjectProp<Paint> textFillProperty = paintWrappedProperty(delegate.textFillProperty(), textFill);
-	shared ObjectProp<String> textProperty = stringWrappedProperty(delegate.textProperty());
+	//shared ObjectProp<Position> alignementProperty;
+	//shared ObjectProperty<Integer> prefColumnCount = integerP 
 	
 }
 

@@ -1,7 +1,7 @@
 import ceylonfx.utils { nullSafeEquals }
 
-"A read-only property."
-shared interface Property<out Prop> {
+
+shared interface ReadableProperty<out Prop> {
 	"Gets the value of this property."
 	shared formal Prop get;
 	
@@ -10,19 +10,21 @@ shared interface Property<out Prop> {
 	
 }
 
-"A write-only property."
-shared interface Writable<in Prop> {
+
+shared interface WritableValue<in Prop> {
 	
 	"Sets the value of this property."
 	shared formal void set(Prop prop);
 	
 }
 
+shared interface Property<Prop> satisfies ReadableProperty<Prop>&WritableValue<Prop> {}
+
 """A read/write property.
-   It can be exposed as a read-only [[Property]] or a write-only [[Writable]].
+   It can be exposed as a read-only [[ReadableProperty]] or a write-only [[WritableValue]].
    """
 shared class ObjectProperty<Prop>(Prop prop)
-		satisfies Property<Prop>&Writable<Prop> {
+		satisfies Property<Prop> {
 
 	variable Prop property = prop;
 	variable {Anything(Prop)*} toNotify = {};
@@ -49,15 +51,15 @@ shared alias StringProperty => ObjectProperty<String>;
 shared alias FloatProperty => ObjectProperty<Float>;
 shared alias IntegerProperty => ObjectProperty<Integer>;
 
-"Bind a [[Property]] to a [[Writable]], so that the value of the Writable will be
+"Bind a [[ReadableProperty]] to a [[WritableValue]], so that the value of the Writable will be
  updated every time the Property's value is changed."
-shared void bind<Prop>(Property<Prop> from, Writable<Prop> to) {
+shared void bind<Prop>(ReadableProperty<Prop> from, WritableValue<Prop> to) {
 	from.onChange((Prop from) => to.set(from));
 }
 
-"Bind a [[Property]] to a [[Writable]], so that the value of the Writable will be
+"Bind a [[ReadableProperty]] to a [[WritableValue]], so that the value of the Writable will be
  updated every time the Property's value is changed, using the given transform."
-shared void bindConverting<From, To>(Property<From> from, Writable<To> to, To(From) transform) {
+shared void bindConverting<From, To>(ReadableProperty<From> from, WritableValue<To> to, To(From) transform) {
 	from.onChange((From from) => to.set(transform(from)));
 }
 
@@ -76,7 +78,7 @@ Prop1(Prop2) transform1, Prop2(Prop1) transform2) {
 	prop2.onChange((Prop2 to) => prop1.set(transform1(to)));
 }
 
-"Use this class to create a binding between an [[ObjectProperty]] and a [[Writable]] property
+"Use this class to create a binding between an [[ObjectProperty]] and a [[WritableValue]] property
  which can be passed as a constructor argument to certain CeylonFX containers.
  
  For example:
@@ -89,7 +91,7 @@ shared class Binding<out From, out To>
         (ObjectProperty<From> -> To(From) bindEntry) {
 	
 	"Provide the property to bind to."
-	shared void bind(Writable<To> to) {
+	shared void bind(WritableValue<To> to) {
 		bindConverting(bindEntry.key, to, bindEntry.item);
 	}
 	

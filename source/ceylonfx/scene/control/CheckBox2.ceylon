@@ -1,31 +1,37 @@
+import ceylonfx.application {
+	CeylonFxAdapter
+}
+import ceylonfx.binding {
+	stringWrappedProperty,
+	Property,
+	booleanWrappedProperty,
+	Unset,
+	unset
+}
 import ceylonfx.scene.paint {
 	Paint,
-	paintWrappedProperty,
-	black
+	paintWrappedProperty
 }
 
 import javafx.scene.control {
 	JCheckBox=CheckBox
 }
-import ceylonfx.binding { stringWrappedProperty, ObjectProp, booleanWrappedProperty }
-import ceylonfx.application { CeylonFxAdapter }
 
 shared class CheckBox2 (
-	Boolean selected = false,
-	String initialText = "",
-	Boolean allowIndeterminate = false,
-	Paint textFill = black,
-	Tooltip? tooltip = null) 
+	Boolean|Unset selected = unset,
+	String|Unset text = unset,
+	Boolean|Unset allowIndeterminate = unset,
+	Paint|Unset textFill = unset,
+	Tooltip|Unset tooltip = unset) 
 		extends CeylonFxAdapter<JCheckBox>() {
 	
-	value jCheckBox = JCheckBox(initialText);
-	shared actual JCheckBox delegate => jCheckBox;
+	shared actual JCheckBox delegate = JCheckBox();
 		
-	shared ObjectProp<Boolean> selectedProperty = booleanWrappedProperty(jCheckBox.selectedProperty(), selected);
-	shared ObjectProp<Boolean> allowIndeterminateProperty = booleanWrappedProperty(jCheckBox.allowIndeterminateProperty(), allowIndeterminate);
-	shared ObjectProp<Paint> textFillProperty = paintWrappedProperty(jCheckBox.textFillProperty(), textFill);
-	shared ObjectProp<String> textProperty = stringWrappedProperty(jCheckBox.textProperty());
-	shared ObjectProp<Tooltip> tooltipProperty = tooltipWrappedProperty(jCheckBox.tooltipProperty(), tooltip);
+	shared Property<Boolean> selectedProperty = booleanWrappedProperty(delegate.selectedProperty(), selected);
+	shared Property<Boolean> allowIndeterminateProperty = booleanWrappedProperty(delegate.allowIndeterminateProperty(), allowIndeterminate);
+	shared Property<Paint> textFillProperty = paintWrappedProperty(delegate.textFillProperty(), textFill);
+	shared Property<String> textProperty = stringWrappedProperty(delegate.textProperty(), text);
+	shared Property<Tooltip> tooltipProperty = tooltipWrappedProperty(delegate.tooltipProperty(), tooltip);
 		
 }
 

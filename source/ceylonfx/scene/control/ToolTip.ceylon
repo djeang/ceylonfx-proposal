@@ -1,10 +1,10 @@
 import javafx.scene.control { JTooltip = Tooltip}
-import ceylonfx.binding { ObjectProp, JObjectProp, WrappedProperty, stringWrappedProperty }
+import ceylonfx.binding { Property, JObjectProp, JavaWrappedProperty, stringWrappedProperty, Unset, unset }
 import ceylonfx.application.java { TypeConverter }
-import ceylonfx.utils { stringC2J, stringJ2C }
 
-
-shared class Tooltip(JTooltip? wrapped = null, String text = "") {
+shared class Tooltip(
+	JTooltip? wrapped = null, 
+	String|Unset text = unset) {
 
 	shared JTooltip delegate;
 	if (exists wrapped) {
@@ -13,25 +13,14 @@ shared class Tooltip(JTooltip? wrapped = null, String text = "") {
 		delegate = JTooltip();
 	}
 
-	shared ObjectProp<String> textProperty = stringWrappedProperty(delegate.textProperty(), text);
+	shared Property<String> textProperty = stringWrappedProperty(delegate.textProperty(), text);
 	
 }
 
 shared object tooltipJ2C satisfies TypeConverter<JTooltip, Tooltip> {
-
 	shared actual Tooltip convert(JTooltip from) => Tooltip(from);
-	
 } 
 
-shared object tooltipC2C satisfies TypeConverter<Tooltip, JTooltip> {
-
-	shared actual JTooltip convert(Tooltip from) => from.delegate;
-	
-}
-
-shared WrappedProperty<Tooltip, JTooltip> tooltipWrappedProperty(JObjectProp<JTooltip> jProp, Tooltip? initValue) {
-	value result =  WrappedProperty(jProp, tooltipC2C, tooltipJ2C);
-	if (exists initValue) {return result.init(initValue);}
-	return result;
- 
+shared JavaWrappedProperty<Tooltip, JTooltip> tooltipWrappedProperty(JObjectProp<JTooltip> jProp, Tooltip|Unset initValue) {
+	return  JavaWrappedProperty(jProp, Tooltip.delegate, tooltipJ2C.convert, initValue);
 }
