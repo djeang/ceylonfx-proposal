@@ -23,13 +23,14 @@ shared void run()
 			VBox {
 				CheckBox2{
 					selected =  true;
-					initialText = "My init text";
+					text = "My text";
 					allowIndeterminate = true;
 					textFill = red;
 					tooltip = Tooltip {
 						text = "My Tooltip Text";
 					};
-				}
+				},
+				CheckBox2{}
 			}
 		};
 	};

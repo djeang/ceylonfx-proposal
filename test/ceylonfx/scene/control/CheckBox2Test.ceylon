@@ -6,6 +6,7 @@ import ceylonfx.binding {
 	bindConverting
 }
 import ceylonfx.scene.paint { red }
+import ceylonfx.scene.control { CheckBox2 }
 
 shared test void selectedIsBounded() {
 	value checkBox = CheckBox2(true);

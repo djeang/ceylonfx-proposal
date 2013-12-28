@@ -3,7 +3,7 @@ import ceylonfx.application {
 }
 import ceylonfx.binding {
 	Binding,
-	ObjectProperty, Property
+	ObjectProperty, ReadableProperty
 }
 import ceylonfx.geometry {
 	Location, Point3D, Bounds, BoundingBox
@@ -68,15 +68,15 @@ shared abstract class Node<out Delegate> (
 		effect.bind(effectProperty);
 	}
 	
-	object boundsInLocalProperty extends CeylonFxAdapter<Property<Bounds<JBounds>>>() {
-		shared actual Property<Bounds<JBounds>> delegate {
+	object boundsInLocalProperty extends CeylonFxAdapter<ReadableProperty<Bounds<JBounds>>>() {
+		shared actual ReadableProperty<Bounds<JBounds>> delegate {
 			value property = ObjectProperty<Bounds<JBounds>>(BoundingBox([0.0, 0.0], [0.0, 0.0]));
 			bindToJavaFx(outer.delegate.boundsInLocalProperty(), property, boundingBoxJ2C);
 			return property;
 		}
 	}
 	
-	shared Property<Bounds<JBounds>> boundsInLocal => boundsInLocalProperty.delegate;
+	shared ReadableProperty<Bounds<JBounds>> boundsInLocal => boundsInLocalProperty.delegate;
 	
 	//TODO implement methods, including read-only properties not declared in the constructor
 	

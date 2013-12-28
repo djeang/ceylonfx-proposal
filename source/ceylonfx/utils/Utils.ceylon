@@ -14,7 +14,8 @@ import java.lang {
 	Bool=Boolean,
 	JString=String,
 	JFloat=Float,
-	JInt=Integer
+	JInt=Integer, 
+	JDouble=Double
 }
 import java.util.concurrent {
 	CountDownLatch
@@ -26,6 +27,7 @@ import javafx.application {
 import javafx.scene.paint {
 	JPaint=Paint
 }
+import ceylonfx.binding { integerReadOnlyWrappedProperty }
 
 shared object booleanC2J satisfies TypeConverter<Boolean, Bool> {
 	shared actual Bool convert(Boolean from) => from then Bool.\iTRUE else Bool.\iFALSE;
@@ -57,6 +59,14 @@ shared object floatC2J satisfies TypeConverter<Float, JFloat> {
 
 shared object floatJ2C satisfies TypeConverter<JFloat, Float> {
 	shared actual Float convert(JFloat from) => from.floatValue();
+}
+
+shared object doubleC2J satisfies TypeConverter<Float, JDouble> {
+	shared actual JDouble convert(Float from) => JDouble(from);
+}
+
+shared object doubleJ2C satisfies TypeConverter<JDouble, Float> {
+	shared actual Float convert(JDouble from) => from.doubleValue();
 }
 
 shared object paintJ2C satisfies TypeConverter<JPaint, Paint> {
@@ -103,4 +113,19 @@ shared Boolean nullSafeEquals(Anything item1, Anything item2) {
 	} else {
 		return (item1 exists) == (item2 exists);
 	}
+}
+
+shared class LazyValue<Type>(Type() provider, variable Type? cache = null) {
+	
+	
+	shared Type get() {
+		value candidate = cache; 
+		if (exists candidate) {
+			return candidate;
+		}
+		value result = provider();
+		cache = result; 
+		return result;
+	}
+
 }

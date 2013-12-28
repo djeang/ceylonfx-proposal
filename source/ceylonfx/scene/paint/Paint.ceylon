@@ -1,21 +1,31 @@
 import ceylonfx.application {
-    CeylonFxAdapter
+	CeylonFxAdapter
+}
+import ceylonfx.binding {
+	Unset,
+	JObjectProp,
+	JavaWrappedProperty,
+	unset,
+	Property
 }
 import ceylonfx.geometry {
-    Location,
-    Dimension
+	Location,
+	Dimension
+}
+import ceylonfx.utils {
+	paintJ2C
 }
 
 import javafx.scene.image {
-    Image
+	Image
 }
 import javafx.scene.paint {
-    JCycleMethod=CycleMethod,
-    JStop=Stop,
-    JLinearGrad=LinearGradient,
-    JRadialGrad=RadialGradient,
-    JImagePattern=ImagePattern,
-    JPaint=Paint
+	JCycleMethod=CycleMethod,
+	JStop=Stop,
+	JLinearGrad=LinearGradient,
+	JRadialGrad=RadialGradient,
+	JImagePattern=ImagePattern,
+	JPaint=Paint
 }
 
 shared alias Stop => [Float, Color];
@@ -86,4 +96,8 @@ shared class ImagePattern(
 		anchorDimension[0], anchorDimension[1],
 		proportional);
 	
+}
+
+shared Property<Paint> paintWrappedProperty(JObjectProp<JPaint> jProp, Paint|Unset initValue = unset) {
+	return JavaWrappedProperty(jProp, Paint.delegate, paintJ2C.convert, initValue);
 }

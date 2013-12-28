@@ -3,6 +3,9 @@ import javafx.geometry {
 	Pos,
 	VPos
 }
+import ceylonfx.binding { JObjectProp, Unset, unset, JavaWrappedProperty, Property}
+
+
 
 shared abstract class HorizontalPosition(shared HPos hpos)
 		of horizontalCenter|horizontalLeft|horizontalRight {
@@ -29,12 +32,13 @@ shared object verticalBottom
 shared object verticalTop
 		extends VerticalPosition(VPos.\iTOP) {}
 
+
 shared abstract class Position(
 	shared HorizontalPosition hPosition,
 	shared VerticalPosition vPosition)
 		of topLeft|topCenter|topRight|
 		centerLeft|center|centerRight|
-		bottomLeft|bottomCenter|bottomRight {
+		bottomLeft|bottomCenter|bottomRight|Delegate {
 	shared formal Pos pos;
 }
 
@@ -65,6 +69,17 @@ shared object bottomCenter extends Position(horizontalCenter, verticalBottom) {
 shared object bottomRight extends Position(horizontalRight, verticalBottom) {
 	pos => Pos.\iBOTTOM_RIGHT;
 }
+class Delegate(Pos jPos) extends Position(horizontalRight, verticalBottom) {
+	pos => jPos;
+} 
 
 shared alias Location => [Float, Float];
 shared alias Dimension => [Float, Float];
+
+shared Property<Position> positionWrappedProperty(JObjectProp<Pos> jProp, Position|Unset initValue = unset) {
+	Position j2c(Pos jPos) {
+		return Delegate(jPos);
+	}
+	return JavaWrappedProperty(jProp, Position.pos, j2c, initValue);
+
+}

@@ -7,22 +7,25 @@ import ceylonfx.scene {
 import ceylonfx.scene.layout {
 	VBox
 }
-import ceylonfx.scene.paint {
-	red
-}
 import ceylonfx.stage {
 	Stage
 }
-import ceylonfx.scene.control { CheckBox }
+import ceylonfx.geometry { topRight }
 
-shared void run2() 
+shared void runTextFields() 
 		=> CeylonFX {
 	args = process.arguments;
 	Stage {
 		() => Scene {
 			dimension = [50.0, 50.0];
 			VBox {
-				CheckBox(true,"My init text 2", true, red)
+				TextField { 
+					editable = true; 
+					promptText = "Enter text here"; 
+					text = "nothing"; 
+					alignement = topRight;
+					//onAction = nothing; 
+					prefColumCount = 10; }
 			}
 		};
 	};

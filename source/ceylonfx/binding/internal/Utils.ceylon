@@ -6,7 +6,7 @@ import ceylonfx.application.java {
 	}
 }
 import ceylonfx.binding {
-	Writable
+	WritableValue
 }
 
 import javafx.beans.property {
@@ -14,7 +14,7 @@ import javafx.beans.property {
 }
 
 "Used internally by CeylonFX to bind Ceylon properties to their JavaFX counterparts."
-shared void bindToJavaFx<in C, out J>(ReadOnlyProperty<J> javaProp, Writable<C> ceylonProp, TypeConverter<J, C> converter)
+shared void bindToJavaFx<in C, out J>(ReadOnlyProperty<J> javaProp, WritableValue<C> ceylonProp, TypeConverter<J, C> converter)
 		given C satisfies Object {
 	object selectedListener satisfies CeylonListener<C> {
 		shared actual void onChange(C? from, C? to) {

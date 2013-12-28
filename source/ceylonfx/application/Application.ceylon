@@ -54,6 +54,8 @@ shared abstract class CeylonFxAdapter<out Delegate>()
 	
 	"""Get the JavaFX delegate for this CeylonFxAdapter."""
 	shared formal Delegate delegate;
+
+   
 	
 }
 
