@@ -22,10 +22,9 @@ shared class TextField (
 	// From TextField
 	Position|Unset alignement = unset,
 	Anything(TextField)|Unset onAction = unset, 
-	Integer|Unset prefColumCount = unset) 
-		extends TextInputControl(jfxComponent, editable, promptText, text) {
-	
-	shared actual JTextField delegate = jfxComponent;
+	Integer|Unset prefColumCount = unset,
+	JTextField delegate = JTextField()) 
+		extends TextInputControl(delegate, editable, promptText, text) {
 		
 	shared Property<Position> alignementProperty = positionWrappedProperty(delegate.alignmentProperty(), alignement);
 	shared Property<Integer> prefColumnCountProperty = integerWrappedProperty(delegate.prefColumnCountProperty(), prefColumCount); 

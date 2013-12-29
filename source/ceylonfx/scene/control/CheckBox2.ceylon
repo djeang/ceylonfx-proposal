@@ -18,16 +18,15 @@ import javafx.scene.control {
 }
 
 shared class CheckBox2 (
-	
 	Boolean|Unset selected = unset,
 	String|Unset text = unset,
 	Boolean|Unset allowIndeterminate = unset,
 	Paint|Unset textFill = unset,
 	Tooltip|Unset tooltip = unset,
-	JCheckBox jcheckbox = JCheckBox() ) 
-		extends CeylonFxAdapter<JCheckBox>() {
+	JCheckBox delegate = JCheckBox()) 
+		extends CeylonFxAdapter<JCheckBox>(delegate) {
 	
-	shared actual JCheckBox delegate = jcheckbox;
+	//shared actual JCheckBox delegate = jcheckbox;
 		
 	shared Property<Boolean> selectedProperty = booleanWrappedProperty(delegate.selectedProperty(), selected);
 	shared Property<Boolean> allowIndeterminateProperty = booleanWrappedProperty(delegate.allowIndeterminateProperty(), allowIndeterminate);

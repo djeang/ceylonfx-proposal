@@ -1,6 +1,7 @@
 import javafx.scene {
     JCursor=Cursor
 }
+import ceylonfx.binding { Unset, JavaWrappedProperty, unset, JObjectProp, Property }
 
 shared class Cursor(shared JCursor cursor) {}
 shared object closedHandCursor extends Cursor(JCursor.\iCLOSED_HAND) {}
@@ -22,3 +23,7 @@ shared object eastResizeCursor extends Cursor(JCursor.\iE_RESIZE) {}
 shared object westResizeCursor extends Cursor(JCursor.\iW_RESIZE) {}
 shared object textCursor extends Cursor(JCursor.\iTEXT) {}
 shared object waitCursor extends Cursor(JCursor.\iWAIT) {}
+
+shared Property<Cursor> cursorWrappedProperty(JObjectProp<JCursor> jProp, Cursor|Unset initValue = unset) {
+	return JavaWrappedProperty(jProp, Cursor.cursor, Cursor, initValue);
+}
