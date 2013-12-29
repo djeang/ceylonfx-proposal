@@ -49,11 +49,11 @@ shared class CeylonFX(stage, Boolean showNow = true, String?* args) {
    
    All CeylonFX Nodes, except for some top-level components, should extend this class
    so that it is always possible to reach the JavaFX delegate"""
-shared abstract class CeylonFxAdapter<out Delegate>()
+shared abstract class CeylonFxAdapter<out Delegate>(shared Delegate delegate)
 		given Delegate satisfies Object {
 	
-	"""Get the JavaFX delegate for this CeylonFxAdapter."""
-	shared formal Delegate delegate;
+	///"""Get the JavaFX delegate for this CeylonFxAdapter."""
+	//shared Delegate delegate
 
    
 	

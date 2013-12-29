@@ -30,8 +30,8 @@ import javafx.scene.paint {
 
 shared alias Stop => [Float, Color];
 
-shared abstract class Paint() 
-		extends CeylonFxAdapter<JPaint>() {}
+shared abstract class Paint(JPaint delegate) 
+		extends CeylonFxAdapter<JPaint>(delegate) {}
 
 shared abstract class CycleMethod(shared JCycleMethod type)
         of noCycle|reflectCycle|repeatCycle {
@@ -44,6 +44,15 @@ shared object reflectCycle extends CycleMethod(JCycleMethod.\iREFLECT) {}
 {JStop*} jStops({Stop*} stops)
 		=> { for (elem in stops) JStop(elem[0], elem[1].delegate) };
 
+JPaint jDelegate(Location start, Location end, Boolean proportional, CycleMethod cycleMethod,{Stop*} stops ) {
+ return JLinearGrad(
+	start[0], start[1],
+	end[0], end[1], 
+	proportional, 
+	cycleMethod.type, 
+	*jStops(stops));
+ }
+
 shared class LinearGradient(
 	Location start = [0.0, 0.0],
 	Location end = [1.0, 0.0], 
@@ -51,14 +60,9 @@ shared class LinearGradient(
 	CycleMethod cycleMethod = noCycle, 
 	{Stop*} stops = 
 			{[0.0, white], [1.0, yellow]})
-		extends Paint() {
+		extends Paint(delegate) {
 	
-	shared actual JPaint delegate => JLinearGrad(
-		start[0], start[1],
-		end[0], end[1], 
-		proportional, 
-		cycleMethod.type, 
-		*jStops(stops));
+	
 	
 	
 }
