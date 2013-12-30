@@ -10,10 +10,7 @@ import ceylonfx.stage {
 import ceylonfx.utils {
 	doInFxThread
 }
-
-import javafx.scene {
-	Node
-}
+import ceylon.language.meta.model { Type }
 
 "Application class which is the root of all CeylonFX applications."
 shared class CeylonFX(stage, Boolean showNow = true, String?* args) {
@@ -49,32 +46,23 @@ shared class CeylonFX(stage, Boolean showNow = true, String?* args) {
    
    All CeylonFX Nodes, except for some top-level components, should extend this class
    so that it is always possible to reach the JavaFX delegate"""
-shared abstract class CeylonFxAdapter<out Delegate>(shared Delegate delegate)
-		given Delegate satisfies Object {
-	
-	///"""Get the JavaFX delegate for this CeylonFxAdapter."""
-	//shared Delegate delegate
+shared abstract class CeylonFxAdapter<Delegate>(shared Delegate delegate) {}
 
-   
-	
-}
 
-"A Ceylon Node"
-shared alias CeylonNode => CeylonFxAdapter<Node>;
 
-"Convenience function to transform [[Node]]|[[CeylonNode]]s into [[Node]]s"
-shared {Node*} asNodes({Node|CeylonNode*} mixed) {
-	value nodes = { for(node in mixed) asType<Node>(node) };
-	return { for(node in nodes) if (exists node) node };
-}
 
-shared Type? asType<out Type>(Type|CeylonFxAdapter<Type> toConvert)
-	given Type satisfies Object {
-	if (is Type toConvert) {
-		return toConvert;
-	}
-	if (is CeylonFxAdapter<Type> toConvert) {
-		return toConvert.delegate;
-	}
-	return null;
-}
+//shared {JNode*} asNodes({JNode|Node*} mixed) {
+//	value nodes = { for(node in mixed) asType<JNode>(node) };
+//	return { for(node in nodes) if (exists node) node };
+//}
+//
+//shared Type? asType<out Type>(Type|CeylonFxAdapter<Type> toConvert)
+//	given Type satisfies Object {
+//	if (is Type toConvert) {
+//		return toConvert;
+//	}
+//	if (is CeylonFxAdapter<Type> toConvert) {
+//		return toConvert.delegate;
+//	}
+//	return null;
+//}

@@ -8,30 +8,28 @@ import ceylonfx.application {
 	asNodes
 }
 import ceylonfx.binding {
-	Binding,
-	ObjectProperty,
 	Unset,
-	unset, Property, doubleReadOnlyWrappedProperty, ReadableProperty
+	unset,
+	Property,
+	doubleReadOnlyWrappedProperty,
+	ReadableProperty
 }
 import ceylonfx.geometry {
 	Dimension
 }
-
 import ceylonfx.scene.paint {
 	Paint,
-	white, paintWrappedProperty
+	paintWrappedProperty
 }
 
 import javafx.scene {
-	Node,
 	JScene=Scene,
-	Group
+	JGroup=Group
 }
-import java.lang { Double }
 
 // Don't need to use constructors with 'fill' parameter as a fillProperty exists.
-JScene createDelegate(Dimension|Unset dimension, {Node|CeylonNode*} children, Boolean|Unset depthBuffer) {
-	Group root = Group();
+JScene createDelegate(Dimension|Unset dimension, {Node*} children, Boolean|Unset depthBuffer) {
+	JGroup root = JGroup();
 	root.children.setAll(*asNodes(children));
 	JScene jScene;
     switch(dimension)
@@ -57,7 +55,7 @@ shared class Scene(dimension = unset, fill = unset, depthBuffer = unset,
 	Dimension|Unset dimension ;
 	Paint|Unset fill;
 	Boolean|Unset depthBuffer;
-	{Node|CeylonNode*} children;
+	{Node*} children;
 	Cursor|Unset cursor;
 	JScene delegate;
     

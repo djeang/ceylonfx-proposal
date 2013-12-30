@@ -3,14 +3,14 @@ import ceylonfx.application {
 }
 import ceylonfx.binding {
 	Binding,
-	ObjectProperty, ReadableProperty
+	ObjectProperty, ReadableProperty, Unset, unset, Property, stringWrappedProperty, JObjectProp, JavaWrappedProperty
 }
 import ceylonfx.geometry {
 	Location, Point3D, Bounds, BoundingBox
 }
 import ceylonfx.scene.effect {
 	BlendMode,
-	Effect
+	Effect, blendModeWrappedProperty, effectWrappedProperty
 }
 import javafx.scene {
 	JNode=Node
@@ -20,65 +20,56 @@ import ceylonfx.binding.internal { bindToJavaFx }
 import ceylonfx.geometry.util { boundingBoxJ2C }
 
 "Base class for scene graph nodes."
-shared abstract class Node<out Delegate> (
-	shared String id = "",
-	shared String style = "",
-	shared BlendMode? blendMode = null,
-	shared CacheHint cacheHint = defaultCacheHint,
-	shared Node<JNode>? clip = null,
-	shared Cursor?|Binding<Object, Cursor> cursor = null,
-	shared DepthTest depthTest = inheritDepthTest,
-	shared Effect?|Binding<Object, Effect> effect = null,
-	shared Boolean focusTraversable = false,
-	shared Location location = [0.0, 0.0],
-	shared Boolean managed = true,
-	shared Boolean mouseTransparent = false,
-	shared Boolean pickOnBounds = false,
-	shared Float rotate = 0.0,
-	shared Point3D rotationAxis = Point3D(0.0, 0.0, 0.0),
-	shared [Float, Float, Float] scale = [1.0, 1.0, 1.0],
-	shared [Float, Float, Float] translate = [0.0, 0.0, 0.0],
-	shared Boolean visible = true)
-		extends CeylonFxAdapter<Delegate>()
-		given Delegate satisfies JNode {
+shared abstract class Node (
+	JNode delegate,
+	String|Unset id = unset,
+	String|Unset style = unset,
+	BlendMode|Unset blendMode = unset,
+	CacheHint|Unset cacheHint = unset,
+	Node|Unset clip =unset,
+	Cursor|Unset cursor = unset,
+	DepthTest|Unset depthTest = unset,
+	Effect|Unset effect = unset,
+	Boolean|Unset focusTraversable = unset,
+	Location|Unset location = unset,
+	Boolean|Unset managed = unset,
+	Boolean|Unset mouseTransparent = unset,
+	Boolean|Unset pickOnBounds = unset,
+	Float|Unset rotate = unset,
+	Point3D|Unset rotationAxis = unset,
+	[Float|Unset, Float, Float]|Unset scale = unset,
+	[Float|Unset, Float, Float]|Unset translate = unset,
+	Boolean|Unset visible = true)
+		extends CeylonFxAdapter<JNode>(delegate) {
 	
-	ObjectProperty<Cursor?> createCursorProperty() {
-		if (exists cursor, is Cursor cursor) {
-			return ObjectProperty<Cursor?>(cursor);
-		}
-		return ObjectProperty<Cursor?>(null);
+	shared Property<String> idProperty = stringWrappedProperty(delegate.idProperty(), id);
+	
+	shared Property<String> styleProperty = stringWrappedProperty(delegate.styleProperty(), style);
+	
+	shared Property<BlendMode> blendModeProperty = blendModeWrappedProperty(delegate.blendModeProperty(), blendMode);
+	
+	shared Property<CacheHint> cacheHintProperty = cacheHintWrappedProperty(delegate.cacheHintProperty(), cacheHint);
+	
+	shared Property<Node> clipProperty = nodeWrappedProperty(delegate.clipProperty(), clip);
+			
+	shared Property<DepthTest> depthTestProperty = depthTestWrappedProperty(delegate.depthTestProperty(), depthTest);
+			
+	shared Property<Effect> effectProperty = effectWrappedProperty(delegate.effectProperty(), effect); 	
+		
+			
+	shared ReadableProperty<Bounds<JBounds>> boundsInLocal {
+		value property = ObjectProperty<Bounds<JBounds>>(BoundingBox([0.0, 0.0], [0.0, 0.0]));
+		bindToJavaFx(delegate.boundsInLocalProperty(), property, boundingBoxJ2C);
+		return property;
 	}
-	
-	ObjectProperty<Effect?> createEffectProperty() {
-		if (exists effect, is Effect effect) {
-			return ObjectProperty<Effect?>(effect);
-		}
-		return ObjectProperty<Effect?>(null);
-	}
-	
-	shared ObjectProperty<Cursor?> cursorProperty = createCursorProperty();
-	
-	shared ObjectProperty<Effect?> effectProperty = createEffectProperty();
-	
-	if (is Binding<Object, Cursor> cursor) {
-		cursor.bind(cursorProperty);
-	}
-	
-	if (is Binding<Object, Effect> effect) {
-		effect.bind(effectProperty);
-	}
-	
-	object boundsInLocalProperty extends CeylonFxAdapter<ReadableProperty<Bounds<JBounds>>>() {
-		shared actual ReadableProperty<Bounds<JBounds>> delegate {
-			value property = ObjectProperty<Bounds<JBounds>>(BoundingBox([0.0, 0.0], [0.0, 0.0]));
-			bindToJavaFx(outer.delegate.boundsInLocalProperty(), property, boundingBoxJ2C);
-			return property;
-		}
-	}
-	
-	shared ReadableProperty<Bounds<JBounds>> boundsInLocal => boundsInLocalProperty.delegate;
 	
 	//TODO implement methods, including read-only properties not declared in the constructor
 	
 	
+}
+
+shared class GenericNode(JNode delegate) extends Node(delegate) {}
+
+shared Property<Node> nodeWrappedProperty(JObjectProp<JNode> jProp, Node|Unset initValue = unset) {
+	return JavaWrappedProperty(jProp, Node.delegate, GenericNode, initValue);
 }

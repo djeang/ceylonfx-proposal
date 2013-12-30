@@ -169,6 +169,10 @@ shared JavaWrappedProperty<Boolean, JBoolean> booleanWrappedProperty(JObjectProp
 	return  JavaWrappedProperty(jProp, booleanC2J.convert, booleanJ2C.convert, initValue);
 }
 
+shared JavaWrappedReadOnlyProperty<Boolean, JBoolean> booleanReadOnlyWrappedProperty(JObservableValue<JBoolean> jProp) {
+	return  JavaWrappedReadOnlyProperty(jProp, booleanJ2C.convert);
+}
+
 shared JavaWrappedProperty<Float, JFloat> floatWrappedProperty(JObjectProp<JFloat> jProp, Float|Unset initValue = unset) {
 	return  JavaWrappedProperty(jProp, floatC2J.convert, floatJ2C.convert, initValue);
 }

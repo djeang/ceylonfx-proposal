@@ -78,7 +78,7 @@ shared object roundLineJoin extends StrokeLineJoin(JStrokeLJ.\iROUND) {}
 
 "The Shape class provides definitions of common properties for objects that represent some
  form of geometric shape."
-shared abstract class Shape<out Type>(
+shared abstract class Shape<out Delegate>(
 	shared Paint fill,
 	shared Boolean smooth,
 	shared Float strokeDashOffset,
@@ -88,8 +88,8 @@ shared abstract class Shape<out Type>(
 	shared Paint? stroke,
 	shared StrokeType strokeType,
 	shared Float strokeWidth)
-		extends Node<Type>()
-		given Type satisfies JNode {}
+		extends Node<Delegate>()
+		given Delegate satisfies JNode {}
 
 "The Rectangle class defines a rectangle with the specified size and location.
  By default the rectangle has sharp corners.

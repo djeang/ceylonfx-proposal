@@ -1,9 +1,13 @@
 import javafx.scene{ JCacheHint=CacheHint }
+import ceylonfx.binding { Property, JObjectProp, Unset, unset, JavaWrappedProperty }
+
 
 "Cache hints for use with `Node.cacheHint`"
 shared abstract class CacheHint(shared JCacheHint delegate)
 		of defaultCacheHint|qualityCacheHint|rotateCacheHint|scaleCacheHint|
-		scaleAndRotateCacheHint|speedCacheHint {}
+		scaleAndRotateCacheHint|speedCacheHint|CacheHintDelegate {}
+
+class CacheHintDelegate(JCacheHint delegate) extends CacheHint(delegate) {}
 
 "No additional hint."
 shared object defaultCacheHint extends CacheHint(JCacheHint.\iDEFAULT) {}
@@ -22,3 +26,7 @@ shared object scaleAndRotateCacheHint extends CacheHint(JCacheHint.\iSCALE_AND_R
 
 "A hint to tell the bitmap caching mechanism that this node is animating, and should be painted from the bitmap cache whenever possible in order to maintain smooth animation."
 shared object speedCacheHint extends CacheHint(JCacheHint.\iSPEED) {}
+
+shared Property<CacheHint> cacheHintWrappedProperty(JObjectProp<JCacheHint> jProp, CacheHint|Unset init = unset) {
+	return JavaWrappedProperty(jProp, CacheHint.delegate, CacheHintDelegate, init);
+}

@@ -1,9 +1,16 @@
 import javafx.scene.effect { JBlendMode=BlendMode, JEffect=Effect }
 import ceylonfx.application { CeylonFxAdapter }
+import ceylonfx.binding { JObjectProp, Unset, Property, JavaWrappedProperty, unset }
 
 "The abstract base class for all effect implementations. An effect is a graphical algorithm that produces an image, typically as a modification of a source image."
 shared abstract class Effect(JEffect delegate)
 		extends CeylonFxAdapter<JEffect>(delegate) {}
+
+class EffectGeneric(JEffect delegate) extends Effect(delegate) {}
+
+shared Property<Effect> effectWrappedProperty(JObjectProp<JEffect> jProp, Effect|Unset init = unset) {
+	return JavaWrappedProperty(jProp, Effect.delegate, EffectGeneric, init);
+}
 
 "A blending mode defines the manner in which the inputs of a Blend effect are composited together or how a Node is blended into the background of a scene. "
 shared abstract class BlendMode(shared JBlendMode delegate)
@@ -11,7 +18,9 @@ shared abstract class BlendMode(shared JBlendMode delegate)
 		darkenBlendMode|differenceBlendMode|exclusionBlendMode|greenBlendMode|
 		hardLightBlendMode|lightenBlendMode|multiplyBlendMode|overlayBlendMode|
 		redBlendMode|screenBlendMode|softLightBlendMode|srcAtopBlendMode|
-		srcOverBlendMode {}
+		srcOverBlendMode|BlendModeGeneric {}
+
+class BlendModeGeneric(JBlendMode delegate) extends BlendMode(delegate) {}
 
 "The color and alpha components from the top input are added to those from the bottom input."
 shared object addBlendMode extends BlendMode(JBlendMode.\iADD) {}
@@ -64,3 +73,6 @@ shared object srcAtopBlendMode extends BlendMode(JBlendMode.\iSRC_ATOP) {}
 "The top input is blended over the bottom input."
 shared object srcOverBlendMode extends BlendMode(JBlendMode.\iSRC_OVER) {}
 
+shared Property<BlendMode> blendModeWrappedProperty(JObjectProp<JBlendMode> jProp, BlendMode|Unset init = unset) {
+	return JavaWrappedProperty(jProp, BlendMode.delegate, BlendModeGeneric, init); 
+}
