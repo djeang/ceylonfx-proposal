@@ -30,8 +30,11 @@ import javafx.scene.paint {
 
 shared alias Stop => [Float, Color];
 
-shared abstract class Paint(JPaint delegate) 
-		extends CeylonFxAdapter<JPaint>(delegate) {}
+shared abstract class Paint<Delegate = JPaint>(Delegate delegate) 
+		extends CeylonFxAdapter<Delegate>(delegate)
+		given Delegate satisfies JPaint {}
+
+class PaintGeneric(JPaint delegate) extends Paint<JPaint>(delegate) {}
 
 shared abstract class CycleMethod(shared JCycleMethod type)
         of noCycle|reflectCycle|repeatCycle {
@@ -54,7 +57,7 @@ shared class LinearGradient(
 			{[0.0, white], [1.0, yellow]},
 	JLinearGrad delegate = JLinearGrad(start[0], start[1], end[0], end[1], proportional, 
 		cycleMethod.type, *jStops(stops)) )
-		extends Paint(delegate) {
+		extends Paint<JLinearGrad>(delegate) {
 	
 	
 }
@@ -76,7 +79,7 @@ shared class RadialGradient(
 		proportional,
 		cycleMethod.type, 
 		*jStops(stops))) 
-		extends Paint(delegate) {
+		extends Paint<JRadialGrad>(delegate) {
 
 }
 
@@ -90,12 +93,15 @@ shared class ImagePattern(
 		anchorLocation[0], anchorLocation[1],
 		anchorDimension[0], anchorDimension[1],
 		proportional) )
-		extends Paint(delegate) {
-	
-	
-	
+		extends Paint<JImagePattern>(delegate) {
+
 }
 
-shared Property<Paint> paintWrappedProperty(JObjectProp<JPaint> jProp, Paint|Unset initValue = unset) {
-	return JavaWrappedProperty(jProp, Paint.delegate, paintJ2C.convert, initValue);
+shared Property<Paint> paintWrappedProperty(JObjectProp<JPaint> jProp, Paint<JPaint>|Unset initValue = unset) {
+	return JavaWrappedProperty(jProp, Paint.delegate, PaintGeneric, initValue);
+}
+
+
+shared Property<Paint?> paintOrNullWrappedProperty(JObjectProp<JPaint?> jProp, Paint?|Unset initValue = unset) {
+	return JavaWrappedProperty(jProp, paint, paintJ2C.convert, initValue);
 }

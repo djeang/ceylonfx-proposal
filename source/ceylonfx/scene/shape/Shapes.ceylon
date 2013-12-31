@@ -7,7 +7,7 @@ import ceylonfx.scene {
 import ceylonfx.scene.paint {
 	Paint,
 	white,
-	black
+	black, paintWrappedProperty
 }
 import ceylonfx.scene.shape.utils {
 	transferProperties
@@ -20,14 +20,21 @@ import javafx.scene.shape {
 	JRect=Rectangle,
 	JStrokeType=StrokeType,
 	JStrokeLC=StrokeLineCap,
-	JStrokeLJ=StrokeLineJoin
+	JStrokeLJ=StrokeLineJoin,
+	JShape=Shape
 }
+import ceylonfx.binding { Property, JObjectProp, Unset, unset, JavaWrappedProperty }
 
 "Defines where to draw the stroke around the boundary of a Shape node."
 shared abstract class StrokeType(JStrokeType strokeType)
-		of centeredStroke|insideStroke|outsideStroke {
+		of centeredStroke|insideStroke|outsideStroke|StrokeTypeGeneric {
 	shared JStrokeType delegate => strokeType;
 }
+
+class StrokeTypeGeneric(JStrokeType delegate) extends StrokeType(delegate) {}
+
+shared Property<StrokeType> strokeTypeWrappedProperty(JObjectProp<JStrokeType> jProp, StrokeType|Unset initValue = unset) 
+  => JavaWrappedProperty(jProp, StrokeType.delegate, StrokeTypeGeneric, initValue); 
 
 "The stroke is applied by extending the boundary of the [[Shape]] node by a distance
  of half of the strokeWidth on either side (inside and outside) of the boundary."
@@ -44,9 +51,15 @@ shared object outsideStroke extends StrokeType(JStrokeType.\iOUTSIDE) {}
 
 "Defines the end cap style of a Shape."
 shared abstract class StrokeLineCap(JStrokeLC strokeLineCap)
-		of buttLineCap|roundLineCap|squareLineCap {
+		of buttLineCap|roundLineCap|squareLineCap|StrokeLineCapGeneric {
 	shared JStrokeLC delegate => strokeLineCap;
 }
+
+class StrokeLineCapGeneric(JStrokeLC delegate) extends StrokeLineCap(delegate) {}
+
+shared Property<StrokeLineCap> strokeLineCapWrappedProperty(JObjectProp<JStrokeLC> jProp, StrokeLineCap|Unset initValue = unset) 
+		=> JavaWrappedProperty(jProp, StrokeLineCap.delegate, StrokeLineCapGeneric, initValue); 
+
 
 "Ends unclosed subpaths and dash segments with no added decoration."
 shared object buttLineCap extends StrokeLineCap(JStrokeLC.\iBUTT) {}
@@ -62,9 +75,15 @@ shared object squareLineCap extends StrokeLineCap(JStrokeLC.\iSQUARE) {}
 
 "Defines the line join style of a Shape."
 shared abstract class StrokeLineJoin(JStrokeLJ strokeLineJoin)
-		of bevelLineJoin|miterLineJoin|roundLineJoin {
+		of bevelLineJoin|miterLineJoin|roundLineJoin|StrokeLineJoinGeneric {
 	shared JStrokeLJ delegate => strokeLineJoin;
 }
+
+class StrokeLineJoinGeneric(JStrokeLJ delegate) extends StrokeLineJoin(delegate) {}
+
+shared Property<StrokeLineJoin> strokeLineJoinWrappedProperty(JObjectProp<JStrokeLJ> jProp, StrokeLineJoin|Unset initValue = unset) 
+		=> JavaWrappedProperty(jProp, StrokeLineJoin.delegate, StrokeLineJoinGeneric, initValue); 
+
 
 "Joins path segments by connecting the outer corners of their wide outlines with a straight segment."
 shared object bevelLineJoin extends StrokeLineJoin(JStrokeLJ.\iBEVEL) {}
@@ -78,18 +97,25 @@ shared object roundLineJoin extends StrokeLineJoin(JStrokeLJ.\iROUND) {}
 
 "The Shape class provides definitions of common properties for objects that represent some
  form of geometric shape."
-shared abstract class Shape<out Delegate>(
-	shared Paint fill,
-	shared Boolean smooth,
-	shared Float strokeDashOffset,
-	shared StrokeLineCap strokeLineCap,
-	shared StrokeLineJoin strokeLineJoin,
-	shared Float strokeMiterLimit,
-	shared Paint? stroke,
-	shared StrokeType strokeType,
-	shared Float strokeWidth)
-		extends Node<Delegate>()
-		given Delegate satisfies JNode {}
+shared abstract class Shape(
+	JShape delegate,
+	Paint|Unset fill = unset,
+	Boolean|Unset smooth = unset,
+	Float|Unset strokeDashOffset = unset,
+	StrokeLineCap|Unset strokeLineCap = unset,
+	StrokeLineJoin|Unset strokeLineJoin = unset,
+	Float|Unset strokeMiterLimit = unset,
+	Paint?|Unset stroke = unset,
+	StrokeType|Unset strokeType = unset,
+	Float|Unset strokeWidth = unset)
+		extends Node(delegate) {
+	
+	shared Property<Paint> fillProperty = paintWrappedProperty(delegate.fillProperty(), fill);
+	
+	shared Property<Paint?> strokeProperty = paintWrappedProperty(delegate.strokeProperty(), stroke);
+
+
+}
 
 "The Rectangle class defines a rectangle with the specified size and location.
  By default the rectangle has sharp corners.

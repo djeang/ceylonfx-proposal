@@ -69,14 +69,7 @@ shared object doubleJ2C satisfies TypeConverter<JDouble, Float> {
 	shared actual Float convert(JDouble from) => from.doubleValue();
 }
 
-shared object paintJ2C satisfies TypeConverter<JPaint, Paint> {
-	shared actual Paint convert(JPaint from) {
-		object paint extends Paint() {
-			delegate => from;
-		}
-		return paint;
-	}
-}
+
 
 shared TypeConverter<JavaType, CeylonType> asTypeConverter<JavaType, CeylonType>(
 	CeylonType transform(JavaType? from)) {
