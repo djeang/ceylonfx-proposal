@@ -34,7 +34,7 @@ shared abstract class Paint<Delegate = JPaint>(Delegate delegate)
 		extends CeylonFxAdapter<Delegate>(delegate)
 		given Delegate satisfies JPaint {}
 
-class PaintGeneric(JPaint delegate) extends Paint<JPaint>(delegate) {}
+class PaintGeneric(JPaint delegate) extends Paint(delegate) {}
 
 shared abstract class CycleMethod(shared JCycleMethod type)
         of noCycle|reflectCycle|repeatCycle {
@@ -98,7 +98,7 @@ shared class ImagePattern(
 }
 
 shared Property<Paint> paintWrappedProperty(JObjectProp<JPaint> jProp, Paint<JPaint>|Unset initValue = unset) {
-	return JavaWrappedProperty(jProp, Paint.delegate, PaintGeneric, initValue);
+	return JavaWrappedProperty(jProp, Paint<JPaint>.delegate, PaintGeneric, initValue);
 }
 
 
