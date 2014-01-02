@@ -8,8 +8,9 @@ import javafx.scene {
 }
 
 
-shared abstract class Parent(JParent delegate) 
-	extends Node(delegate) {
+shared abstract class Parent<out Delegate>(Delegate delegate) 
+	extends Node<Delegate>(delegate)
+	given Delegate satisfies JParent {
 
 	shared ReadableProperty<Boolean> needsLayoutProperty = booleanReadOnlyWrappedProperty(delegate.needsLayoutProperty());
 

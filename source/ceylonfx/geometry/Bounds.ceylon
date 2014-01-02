@@ -7,6 +7,8 @@ import javafx.geometry {
 	JBounds=Bounds,
 	JBBox=BoundingBox
 }
+import javafx.beans.\ivalue { JObservableValue = ObservableValue }
+import ceylonfx.binding { JObjectProp, Unset, unset, Property, JavaWrappedProperty, JavaWrappedReadOnlyProperty, ReadableProperty }
 
 "A set of inside offsets for the 4 side of a rectangular area"
 shared class Insets(
@@ -19,12 +21,21 @@ shared class Insets(
 	
 }
 
+
+shared Property<Insets> insetsWrappedProperty(JObjectProp<JInsets> jprop, Insets|Unset initValue = unset) {
+	Insets fromJava(JInsets jInsets) {
+		return Insets(jInsets.top, jInsets.right, jInsets.bottom, jInsets.left);
+	}
+	return JavaWrappedProperty(jprop, Insets.delegate, fromJava, initValue);
+}
+
 "The base class for objects that are used to describe the bounds of a node or other scene graph object."
-shared abstract class Bounds<out Delegate>(
+shared abstract class Bounds<out Delegate = JBounds>(
+	Delegate delegate,
 	shared [Float, Float, Float] minimumCoordinates = [0.0, 0.0, 0.0],
 	shared [Float, Float, Float] dimension3d = [0.0, 0.0, 0.0])
-		extends CeylonFxAdapter<Delegate>()
-		given Delegate satisfies Object {
+		extends CeylonFxAdapter<Delegate>(delegate)
+		given Delegate satisfies JBounds {
 	
 	"Tests if the interior of this Bounds entirely contains the specified Bounds,
 	 or if the coordinates [x, y] or [[Point3D]] is inside this Bounds."
@@ -35,12 +46,16 @@ shared abstract class Bounds<out Delegate>(
 	
 	"Indicates whether any of the dimensions(width, height or depth) of this bounds is less than zero."
 	shared default Boolean empty => any({ for (coordinate in dimension3d) coordinate < 0.0 });
-	
+
 }
 
+
 "A rectangular bounding box which is used to describe the bounds of a node or other scene graph object."
-shared class BoundingBox(Location|Point3D location, Dimension|[Float, Float, Float] dimension)
-		extends Bounds<JBBox>() {
+shared class BoundingBox(
+			Location|Point3D|Null location, 
+			Dimension|[Float, Float, Float]|Null dimension,
+			JBBox delegate = delegateBBox(location, dimension))
+		extends Bounds<JBBox>(delegate) {
 	
 	shared actual Boolean contains(Bounds<JBounds>|[Float, Float]|Point3D bounds) {
 		switch(bounds)
@@ -59,22 +74,40 @@ shared class BoundingBox(Location|Point3D location, Dimension|[Float, Float, Flo
 		return delegate.intersects(bounds.delegate);
 	}
 	
-	shared actual JBBox delegate {
-		switch(location)
-		case (is Location) {
-			if (exists depth = dimension[2]) {
-				return JBBox(location[0], location[1], 0.0, dimension[0], dimension[1], depth);
-			} else {
-				return JBBox(location[0], location[1], dimension[0], dimension[1]);
-			}
-		}
-		case (is Point3D) {
-			if (exists depth = dimension[2]) {
-				return JBBox(location.x, location.y, location.z, dimension[0], dimension[1], depth);
-			} else {
-				return JBBox(location.x, location.y, location.z, dimension[0], dimension[1], 0.0);
-			}
+}
+
+JBBox delegateBBox(Location|Point3D|Null location, Dimension|[Float, Float, Float]|Null dimension) {
+	assert (exists location, exists dimension);   // Should be call only when location and dimension are set
+	switch(location)
+	case (is Location) {
+		if (exists depth = dimension[2]) {
+			return JBBox(location[0], location[1], 0.0, dimension[0], dimension[1], depth);
+		} else {
+			return JBBox(location[0], location[1], dimension[0], dimension[1]);
 		}
 	}
-	
+	case (is Point3D) {
+		if (exists depth = dimension[2]) {
+			return JBBox(location.x, location.y, location.z, dimension[0], dimension[1], depth);
+		} else {
+			return JBBox(location.x, location.y, location.z, dimension[0], dimension[1], 0.0);
+		}
+	}
+}
+
+Bounds fromJBounds(JBounds jBounds) {
+	switch(jBounds)
+	case (is JBBox) {
+		return BoundingBox(null, null, jBounds);
+	} else {
+		throw Exception("Unknown Bounds implementation");
+	}
+}
+
+shared Property<Bounds> boundsWrappedProperty(JObjectProp<JBounds> jProp, Bounds|Unset initValue = unset) {
+	return JavaWrappedProperty(jProp, Bounds<JBounds>.delegate, fromJBounds, initValue);
+}
+
+shared ReadableProperty<Bounds> boundsReadOnlyWrappedProperty(JObservableValue<JBounds> jProp) {
+	return JavaWrappedReadOnlyProperty(jProp, fromJBounds);
 }

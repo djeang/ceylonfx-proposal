@@ -6,14 +6,12 @@ import ceylonfx.binding {
 	JObjectProp,
 	JavaWrappedProperty,
 	unset,
-	Property
+	Property,
+	JavaOptionalWrappedProperty
 }
 import ceylonfx.geometry {
 	Location,
 	Dimension
-}
-import ceylonfx.utils {
-	paintJ2C
 }
 
 import javafx.scene.image {
@@ -101,7 +99,6 @@ shared Property<Paint> paintWrappedProperty(JObjectProp<JPaint> jProp, Paint<JPa
 	return JavaWrappedProperty(jProp, Paint<JPaint>.delegate, PaintGeneric, initValue);
 }
 
-
-shared Property<Paint?> paintOrNullWrappedProperty(JObjectProp<JPaint?> jProp, Paint?|Unset initValue = unset) {
-	return JavaWrappedProperty(jProp, paint, paintJ2C.convert, initValue);
+shared Property<Paint?> paintOrNullWrappedProperty(JObjectProp<JPaint> jProp, Paint?|Unset initValue = unset) {
+	return JavaOptionalWrappedProperty(jProp, Paint<JPaint>.delegate, PaintGeneric, initValue);
 }

@@ -162,6 +162,64 @@ shared class JavaWrappedProperty<CeylonType, JavaType>(jProperty, c2j, j2c, init
 	
 }
 
+shared class JavaOptionalWrappedProperty<CeylonType, JavaType>(jProperty, c2j, j2c, initValue = unset)
+		satisfies Property<CeylonType?> {
+	
+	JObjectProp<JavaType> jProperty;
+	JavaType(CeylonType) c2j;
+	CeylonType(JavaType) j2c;
+	CeylonType?|Unset initValue;
+	
+	// Should leverage of mixins to un-duplicate code
+	
+	
+	shared actual CeylonType? get {
+		JObservableValue<JavaType> observableValue = jProperty;
+		JavaType? val = observableValue.\ivalue;
+		if (exists val) {
+			return j2c(val);
+		}
+		return null;
+	}
+	
+	shared actual void set(CeylonType? prop) {
+		JWritableValue<JavaType> writableValue = jProperty;
+		if (exists prop) {
+			writableValue.\ivalue = c2j(prop);
+		} else {
+			writableValue.\ivalue = null;
+		}
+	}
+	
+	if (!is Unset initValue) {
+		this.set(initValue);
+	}
+	
+	shared actual void onChange(Anything(CeylonType?) runOnChange) {
+		object ceylonListener satisfies CeylonListener<CeylonType?> {
+			
+			shared actual void onChange(CeylonType? old, CeylonType? newValue ) {
+				if (exists newValue) {
+					runOnChange(newValue);
+				}
+			}
+		}  
+		object j2cConverter satisfies TypeConverter<JavaType, CeylonType?> {
+			
+			shared actual CeylonType? convert(JavaType? from) {
+				if (exists from) {
+					return j2c(from);
+				}
+				return null;
+			}
+			
+		}
+		JChangeListener<JavaType> changeListener = convertChangeListener(ceylonListener, j2cConverter);  
+		jProperty.addListener(changeListener);
+	}
+	
+}
+
 
 shared alias JObjectProp<JavaType> => JWritableValue<JavaType>&JObservableValue<JavaType>;
 

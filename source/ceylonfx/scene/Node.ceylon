@@ -2,31 +2,39 @@ import ceylonfx.application {
 	CeylonFxAdapter
 }
 import ceylonfx.binding {
-	Binding,
-	ObjectProperty, ReadableProperty, Unset, unset, Property, stringWrappedProperty, JObjectProp, JavaWrappedProperty
+	ReadableProperty,
+	Unset,
+	unset,
+	Property,
+	stringWrappedProperty,
+	JObjectProp,
+	JavaWrappedProperty
 }
 import ceylonfx.geometry {
-	Location, Point3D, Bounds, BoundingBox
+	Location,
+	Point3D,
+	Bounds,
+	boundsReadOnlyWrappedProperty
 }
 import ceylonfx.scene.effect {
 	BlendMode,
-	Effect, blendModeWrappedProperty, effectWrappedProperty
+	Effect,
+	blendModeWrappedProperty,
+	effectWrappedProperty
 }
+
 import javafx.scene {
 	JNode=Node
 }
-import javafx.geometry { JBounds=Bounds }
-import ceylonfx.binding.internal { bindToJavaFx }
-import ceylonfx.geometry.util { boundingBoxJ2C }
 
 "Base class for scene graph nodes."
-shared abstract class Node (
-	JNode delegate,
+shared abstract class Node<out Delegate = JNode> (
+	Delegate delegate,
 	String|Unset id = unset,
 	String|Unset style = unset,
 	BlendMode|Unset blendMode = unset,
 	CacheHint|Unset cacheHint = unset,
-	Node|Unset clip =unset,
+	Node<JNode>|Unset clip = unset,
 	Cursor|Unset cursor = unset,
 	DepthTest|Unset depthTest = unset,
 	Effect|Unset effect = unset,
@@ -40,7 +48,8 @@ shared abstract class Node (
 	[Float|Unset, Float, Float]|Unset scale = unset,
 	[Float|Unset, Float, Float]|Unset translate = unset,
 	Boolean|Unset visible = true)
-		extends CeylonFxAdapter<JNode>(delegate) {
+		extends CeylonFxAdapter<Delegate>(delegate)
+		given Delegate satisfies JNode {
 	
 	shared Property<String> idProperty = stringWrappedProperty(delegate.idProperty(), id);
 	
@@ -56,20 +65,14 @@ shared abstract class Node (
 			
 	shared Property<Effect> effectProperty = effectWrappedProperty(delegate.effectProperty(), effect); 	
 		
-			
-	shared ReadableProperty<Bounds<JBounds>> boundsInLocal {
-		value property = ObjectProperty<Bounds<JBounds>>(BoundingBox([0.0, 0.0], [0.0, 0.0]));
-		bindToJavaFx(delegate.boundsInLocalProperty(), property, boundingBoxJ2C);
-		return property;
-	}
+	shared ReadableProperty<Bounds> boundsInLocalProperty = boundsReadOnlyWrappedProperty(delegate.boundsInLocalProperty());
 	
-	//TODO implement methods, including read-only properties not declared in the constructor
-	
+	shared ReadableProperty<Bounds> boundsInParentProperty = boundsReadOnlyWrappedProperty(delegate.boundsInParentProperty());
 	
 }
 
 shared class GenericNode(JNode delegate) extends Node(delegate) {}
 
 shared Property<Node> nodeWrappedProperty(JObjectProp<JNode> jProp, Node|Unset initValue = unset) {
-	return JavaWrappedProperty(jProp, Node.delegate, GenericNode, initValue);
+	return JavaWrappedProperty(jProp, Node<JNode>.delegate, GenericNode, initValue);
 }
