@@ -25,6 +25,7 @@ import ceylonfx.scene.text {
 import ceylonfx.stage {
 	Stage
 }
+import ceylonfx.binding { Unset }
 
 shared void run() 
 		=> CeylonFX {
@@ -34,8 +35,9 @@ shared void run()
 		() => Scene {
 			fill = black;
 			dimension = [600.0, 150.0];
-			VBox {
-				spacing = 20;
+			root = VBox {
+				spacing = 20.0;
+				
 				insets = Insets { top = 15.0; };
 				minimumSize = [600.0, 0.0];
 				alignment = center;
@@ -50,7 +52,7 @@ shared void run()
 					font = font("Arial", 12.0);
 					fill = white;
 				}   
-			}
+			};
 		};
 	};
 };
