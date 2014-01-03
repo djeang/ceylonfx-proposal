@@ -29,7 +29,11 @@ import javafx.scene {
 
 "Base class for scene graph nodes."
 shared abstract class Node<out Delegate = JNode> (
+	
+	// From  CeylonFxAdapter
 	Delegate delegate,
+	
+	// From Node
 	String|Unset id = unset,
 	String|Unset style = unset,
 	BlendMode|Unset blendMode = unset,
@@ -45,8 +49,8 @@ shared abstract class Node<out Delegate = JNode> (
 	Boolean|Unset pickOnBounds = unset,
 	Float|Unset rotate = unset,
 	Point3D|Unset rotationAxis = unset,
-	[Float|Unset, Float, Float]|Unset scale = unset,
-	[Float|Unset, Float, Float]|Unset translate = unset,
+	[Float, Float, Float]|Unset scale = unset,
+	[Float, Float, Float]|Unset translate = unset,
 	Boolean|Unset visible = true)
 		extends CeylonFxAdapter<Delegate>(delegate)
 		given Delegate satisfies JNode {
