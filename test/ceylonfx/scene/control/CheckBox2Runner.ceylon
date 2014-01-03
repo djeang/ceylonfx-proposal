@@ -19,8 +19,9 @@ shared void run()
 	args = process.arguments;
 	Stage {
 		() => Scene {
+			
 			dimension = [50.0, 50.0];
-			VBox {
+			root = VBox {
 				CheckBox2{
 					selected =  true;
 					text = "My text";

@@ -8,7 +8,7 @@ import ceylonfx.binding { JObjectProp, Unset, unset, JavaWrappedProperty, Proper
 
 
 shared abstract class HorizontalPosition(shared HPos hpos)
-		of horizontalCenter|horizontalLeft|horizontalRight {
+		of horizontalCenter|horizontalLeft|horizontalRight|HorizontalPositionGeneric {
 	string=>hpos.string;
 }
 shared object horizontalCenter 
@@ -17,9 +17,14 @@ shared object horizontalLeft
 		extends HorizontalPosition(HPos.\iLEFT) {}
 shared object horizontalRight
 		extends HorizontalPosition(HPos.\iRIGHT) {}
+class HorizontalPositionGeneric(HPos delegate) extends HorizontalPosition(delegate) {}
+shared Property<HorizontalPosition> horizontalpositionWrappedProperty(JObjectProp<HPos> pos, HorizontalPosition|Unset init = unset) {
+	return JavaWrappedProperty(pos, HorizontalPosition.hpos, HorizontalPositionGeneric, init);
+}
+
 
 shared abstract class VerticalPosition(shared VPos vpos)
-		of verticalBaseline|verticalCenter|verticalBottom|verticalTop {
+		of verticalBaseline|verticalCenter|verticalBottom|verticalTop|VertivalPositionGeneric {
 	string=>vpos.string;
 }
 
@@ -31,7 +36,10 @@ shared object verticalBottom
 		extends VerticalPosition(VPos.\iBOTTOM) {}
 shared object verticalTop
 		extends VerticalPosition(VPos.\iTOP) {}
-
+class VertivalPositionGeneric(VPos delegate) extends VerticalPosition(delegate) {}
+shared Property<VerticalPosition> verticalpositionWrappedProperty(JObjectProp<VPos> pos, VerticalPosition|Unset init = unset) {
+	return JavaWrappedProperty(pos, VerticalPosition.vpos, VertivalPositionGeneric, init);
+}
 
 shared abstract class Position(
 	shared HorizontalPosition hPosition,

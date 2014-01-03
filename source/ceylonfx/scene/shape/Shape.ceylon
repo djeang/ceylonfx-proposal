@@ -1,29 +1,39 @@
+import ceylonfx.binding {
+	Property,
+	JObjectProp,
+	Unset,
+	unset,
+	JavaWrappedProperty, booleanWrappedProperty, doubleWrappedProperty
+}
 import ceylonfx.geometry {
-	Dimension
+	Point3D,
+	Location
 }
 import ceylonfx.scene {
-	Node
+	Node,
+	CacheHint,
+	Cursor,
+	DepthTest
+}
+import ceylonfx.scene.effect {
+	BlendMode,
+	Effect
 }
 import ceylonfx.scene.paint {
 	Paint,
-	white,
-	black, paintWrappedProperty
-}
-import ceylonfx.scene.shape.utils {
-	transferProperties
+	paintWrappedProperty,
+	paintOrNullWrappedProperty
 }
 
 import javafx.scene {
 	JNode=Node
 }
 import javafx.scene.shape {
-	JRect=Rectangle,
 	JStrokeType=StrokeType,
 	JStrokeLC=StrokeLineCap,
 	JStrokeLJ=StrokeLineJoin,
 	JShape=Shape
 }
-import ceylonfx.binding { Property, JObjectProp, Unset, unset, JavaWrappedProperty }
 
 "Defines where to draw the stroke around the boundary of a Shape node."
 shared abstract class StrokeType(JStrokeType strokeType)
@@ -97,8 +107,32 @@ shared object roundLineJoin extends StrokeLineJoin(JStrokeLJ.\iROUND) {}
 
 "The Shape class provides definitions of common properties for objects that represent some
  form of geometric shape."
-shared abstract class Shape(
-	JShape delegate,
+shared abstract class Shape<out Delegate>(
+	
+	// From  CeylonFxAdapter
+	Delegate delegate,
+	
+	// From Node
+	String|Unset id = unset,
+	String|Unset style = unset,
+	BlendMode|Unset blendMode = unset,
+	CacheHint|Unset cacheHint = unset,
+	Node<JNode>|Unset clip = unset,
+	Cursor|Unset cursor = unset,
+	DepthTest|Unset depthTest = unset,
+	Effect|Unset effect = unset,
+	Boolean|Unset focusTraversable = unset,
+	Location|Unset location = unset,
+	Boolean|Unset managed = unset,
+	Boolean|Unset mouseTransparent = unset,
+	Boolean|Unset pickOnBounds = unset,
+	Float|Unset rotate = unset,
+	Point3D|Unset rotationAxis = unset,
+	[Float, Float, Float]|Unset scale = unset,
+	[Float, Float, Float]|Unset translate = unset,
+	Boolean|Unset visible = true,
+
+	// From Shape
 	Paint|Unset fill = unset,
 	Boolean|Unset smooth = unset,
 	Float|Unset strokeDashOffset = unset,
@@ -108,45 +142,31 @@ shared abstract class Shape(
 	Paint?|Unset stroke = unset,
 	StrokeType|Unset strokeType = unset,
 	Float|Unset strokeWidth = unset)
-		extends Node(delegate) {
+
+	extends Node<Delegate>(delegate, id, style,blendMode, cacheHint, clip, cursor,
+		depthTest, effect, focusTraversable, location, managed, mouseTransparent,
+		pickOnBounds, rotate, rotationAxis, scale, translate, visible)
+
+	given Delegate satisfies JShape {
+	
 	
 	shared Property<Paint> fillProperty = paintWrappedProperty(delegate.fillProperty(), fill);
 	
-	shared Property<Paint?> strokeProperty = paintWrappedProperty(delegate.strokeProperty(), stroke);
+	shared Property<Boolean> smoothProperty = booleanWrappedProperty(delegate.smoothProperty(), smooth);
+	
+	shared Property<Float> strokeDashOffsetProperty = doubleWrappedProperty(delegate.strokeDashOffsetProperty(), strokeDashOffset);
+		
+	shared Property<StrokeLineCap> strokeLineCapProperty = strokeLineCapWrappedProperty(delegate.strokeLineCapProperty(), strokeLineCap);
+	
+	shared Property<StrokeLineJoin> strokeLineJoinProperty = strokeLineJoinWrappedProperty(delegate.strokeLineJoinProperty(), strokeLineJoin);
+	
+	shared Property<Float> strokeMiterLimitProperty = doubleWrappedProperty(delegate.strokeMiterLimitProperty(), strokeMiterLimit);
+	
+	shared Property<Paint?> strokeProperty = paintOrNullWrappedProperty(delegate.strokeProperty(), stroke);
 
+	shared Property<StrokeType> strokeTypeProperty = strokeTypeWrappedProperty(delegate.strokeTypeProperty(), strokeType);
+
+	shared Property<Float> strokeWidthProperty = doubleWrappedProperty(delegate.strokeWidthProperty(), strokeWidth);
 
 }
 
-"The Rectangle class defines a rectangle with the specified size and location.
- By default the rectangle has sharp corners.
- Rounded corners can be specified using the arcWidth and arcHeight variables. "
-shared class Rectangle(
-	shared Dimension dimension = [0.0, 0.0],
-	shared Float arcWidth = 0.0,
-	shared Float arcHeight = 0.0,
-	Paint fill = white,
-	Boolean smooth = true,
-	Float strokeDashOffset = 0.0,
-	StrokeLineCap strokeLineCap = squareLineCap,
-	StrokeLineJoin strokeLineJoin = miterLineJoin,
-	Float strokeMiterLimit = 10.0,
-	Paint? stroke = black,
-	StrokeType strokeType = centeredStroke,
-	Float strokeWidth = 1.0)
-		extends Shape<JRect>(
-		fill, smooth, strokeDashOffset, strokeLineCap, strokeLineJoin,
-		strokeMiterLimit, stroke, strokeType, strokeWidth) {
-	
-	shared actual JRect delegate {
-		value actual = JRect();
-		actual.width = dimension[0];
-		actual.height = dimension[1];
-		actual.x = location[0];
-		actual.y = location[1];
-		actual.arcWidth = arcWidth;
-		actual.arcHeight = arcHeight;
-		transferProperties(this, actual);
-		return actual;
-	}
-	
-}

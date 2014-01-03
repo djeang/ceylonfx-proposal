@@ -27,7 +27,7 @@ import javafx.scene.layout {
 shared class VBox (
 	
 	// From  CeylonFxAdapter
-	Delegate delegate = JVBox(),
+	JVBox delegate = JVBox(),
 	
 	// From Node
 	String|Unset id = unset,
@@ -68,12 +68,10 @@ shared class VBox (
 	Float|Unset spacing = unset,
 	Boolean|Unset vGrow = unset)
 
-		extends Pane<Delegate>(delegate, id, style,blendMode, cacheHint, clip, cursor,
+		extends Pane<JVBox>(delegate, id, style,blendMode, cacheHint, clip, cursor,
 		depthTest, effect, focusTraversable, location, managed, mouseTransparent,
 		pickOnBounds, rotate, rotationAxis, scale, translate, visible, maxHeight, minHeight, prefHeight, 
-		maxWidth, minWidth, prefWidth, padding, snapToPixel, children)
-		
-		given Delegate satisfies JVBox {
+		maxWidth, minWidth, prefWidth, padding, snapToPixel, children) {
 	
 	
 	//shared actual JVBox delegate {

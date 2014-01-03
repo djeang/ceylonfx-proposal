@@ -3,20 +3,20 @@ import javafx.scene.text {
     JFontPosture=FontPosture,
     JFontWeight=FontWeight
 }
+import ceylonfx.binding { Property, JObjectProp, Unset, unset, JavaWrappedProperty }
 
-shared class Font(shared JFont font) {
-    shared String family => font.family;
-    shared Float size => font.size;
-    shared actual Boolean equals(Object that) {
-        if (is Font that) {
-            return font.equals(that.font);
-        }
-        else {
-            return false;
-        }
-    }
-    hash => font.hash;
-    string => font.name;
+shared class Font(shared JFont delegate) {
+   
+   shared String name => delegate.name;
+   
+   shared Float size => delegate.size; 
+   
+   shared String familly => delegate.family;
+    
+}
+
+shared Property<Font> fontWrappedProperty(JObjectProp<JFont> jProp, Font|Unset init = unset) {
+	return JavaWrappedProperty(jProp, Font.delegate, Font, init);
 }
 
 shared Font font(

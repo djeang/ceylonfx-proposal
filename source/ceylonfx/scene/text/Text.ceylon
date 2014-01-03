@@ -1,87 +1,129 @@
+import ceylonfx.binding {
+	Unset,
+	unset,
+	Property,
+	doubleReadOnlyWrappedProperty,
+	ReadableProperty,
+	booleanWrappedProperty,
+	stringWrappedProperty,
+	doubleWrappedProperty
+}
 import ceylonfx.geometry {
+	Location,
+	Point3D,
 	VerticalPosition,
-	verticalBaseline
+	verticalpositionWrappedProperty
+}
+import ceylonfx.scene {
+	Cursor,
+	DepthTest,
+	Node,
+	CacheHint
+}
+import ceylonfx.scene.effect {
+	Effect,
+	BlendMode
 }
 import ceylonfx.scene.paint {
-	Paint,
-	black
+	Paint
 }
 import ceylonfx.scene.shape {
 	Shape,
-	squareLineCap,
-	miterLineJoin,
 	StrokeType,
 	StrokeLineCap,
-	StrokeLineJoin,
-	centeredStroke
+	StrokeLineJoin
 }
 
-import javafx.scene.text {
-	JText=Text,
-	JFontSmoothingType=FontSmoothingType,
-	JTextBoundsType=TextBoundsType,
-	JTextAlignment=TextAlignment
+import javafx.scene {
+	JNode=Node
 }
-import ceylonfx.scene.shape.utils { transferProperties }
+import javafx.scene.text {
+	JText=Text
+}
+
 
 shared class Text(
-	shared String text,
-	shared Font font = package.font("Arial", 18.0), 
-	shared Boolean underline = false,
-	shared Boolean strikethrough = false,
-	shared Float? wrappingWidth = null,
-	shared FontSmoothing fontSmoothing = graySmoothing,
-	shared TextBounds textBounds = logicalBounds,
-	shared TextAlignment textAlignment = left,
-	shared VerticalPosition textOrigin = verticalBaseline,
-	Paint fill = black,
-	Boolean smooth = true,
-	Float strokeDashOffset = 0.0,
-	StrokeLineCap strokeLineCap = squareLineCap,
-	StrokeLineJoin strokeLineJoin = miterLineJoin,
-	Float strokeMiterLimit = 10.0,
-	Paint? stroke = null,
-	StrokeType strokeType = centeredStroke,
-	Float strokeWidth = 1.0)
-		extends Shape<JText>(
-		fill, smooth, strokeDashOffset, strokeLineCap, strokeLineJoin,
-		strokeMiterLimit, stroke, strokeType, strokeWidth) {
 	
-	shared actual JText delegate {
-		value jtext = JText(location[0], location[1], text);
-		jtext.font = font.font;
-		jtext.underline = underline;
-		jtext.strikethrough = strikethrough;
-		jtext.wrappingWidth = wrappingWidth else 0.0;
-		jtext.fontSmoothingType = fontSmoothing.type;
-		jtext.boundsType = textBounds.type;
-		jtext.textAlignment = textAlignment.type;
-		jtext.textOrigin = textOrigin.vpos;
-		transferProperties(this, jtext);
-		return jtext;	
-	}
+	// From  CeylonFxAdapter
+	JText delegate,
 	
+	// From Node
+	String|Unset id = unset,
+	String|Unset style = unset,
+	BlendMode|Unset blendMode = unset,
+	CacheHint|Unset cacheHint = unset,
+	Node<JNode>|Unset clip = unset,
+	Cursor|Unset cursor = unset,
+	DepthTest|Unset depthTest = unset,
+	Effect|Unset effect = unset,
+	Boolean|Unset focusTraversable = unset,
+	Location|Unset location = unset,
+	Boolean|Unset managed = unset,
+	Boolean|Unset mouseTransparent = unset,
+	Boolean|Unset pickOnBounds = unset,
+	Float|Unset rotate = unset,
+	Point3D|Unset rotationAxis = unset,
+	[Float, Float, Float]|Unset scale = unset,
+	[Float, Float, Float]|Unset translate = unset,
+	Boolean|Unset visible = true,
+	
+	// From Shape
+	Paint|Unset fill = unset,
+	Boolean|Unset smooth = unset,
+	Float|Unset strokeDashOffset = unset,
+	StrokeLineCap|Unset strokeLineCap = unset,
+	StrokeLineJoin|Unset strokeLineJoin = unset,
+	Float|Unset strokeMiterLimit = unset,
+	Paint?|Unset stroke = unset,
+	StrokeType|Unset strokeType = unset,
+	Float|Unset strokeWidth = unset,
+	
+	// From Text
+	TextBoundsType|Unset boundsType = unset,
+	Font|Unset font = unset,
+	FontSmoothingType|Unset fontSmoothingType = unset,
+	Boolean|Unset strikeThrough = unset,
+	TextAlignment|Unset textAlignment = unset,
+	VerticalPosition|Unset textOrigin = unset,
+	String|Unset text = unset,
+	Boolean|Unset underline = unset,
+	Float|Unset wrappingWidth = unset,
+	Float|Unset x = unset,
+	Float|Unset y = unset)
+
+		extends Shape<JText>(delegate, id, style,blendMode, cacheHint, clip, cursor,
+	depthTest, effect, focusTraversable, location, managed, mouseTransparent,
+	pickOnBounds, rotate, rotationAxis, scale, translate, visible, 
+	fill, smooth, strokeDashOffset, strokeLineCap, strokeLineJoin, strokeMiterLimit, 
+	stroke, strokeType, strokeWidth) {
+	
+	shared ReadableProperty<Float> baseLineOffsetProperty = doubleReadOnlyWrappedProperty(delegate.baselineOffsetProperty());
+	
+	shared Property<TextBoundsType> textBoundsTypeProperty = textBoundTypeWrappedProperty(delegate.boundsTypeProperty(), boundsType);
+	
+	shared Property<Font> fontProperty = fontWrappedProperty(delegate.fontProperty(), font); 
+	
+	shared Property<FontSmoothingType> fontSmoothingTypeProperty = fontSmoothingWrappedProperty(delegate.fontSmoothingTypeProperty(), fontSmoothingType);
+	
+	shared Property<Boolean> strikeThroughProperty = booleanWrappedProperty(delegate.strikethroughProperty(), strikeThrough);
+	
+	shared Property<TextAlignment> textAlignmentProperty = textAlignementWrappedProperty(delegate.textAlignmentProperty(), textAlignment);
+	
+	shared Property<VerticalPosition> textOriginPProperty = verticalpositionWrappedProperty(delegate.textOriginProperty(), textOrigin);
+	
+	shared Property<String> textProperty = stringWrappedProperty(delegate.textProperty(), text);
+	
+	shared Property<Boolean> underlineProperty = booleanWrappedProperty(delegate.underlineProperty(), underline);
+
+	shared Property<Float> wrappingWidthProperty = doubleWrappedProperty(delegate.wrappingWidthProperty(), wrappingWidth);
+
+	shared Property<Float> xProperty = doubleWrappedProperty(delegate.xProperty(), x);
+	
+	shared Property<Float> yProperty = doubleWrappedProperty(delegate.yProperty(), wrappingWidth);
+
+
 }
 
-shared abstract class FontSmoothing(shared JFontSmoothingType type)
-		of graySmoothing|lcdSmoothing {
-	string=>type.string;
-}
-shared object lcdSmoothing extends FontSmoothing(JFontSmoothingType.\iLCD) {}
-shared object graySmoothing extends FontSmoothing(JFontSmoothingType.\iGRAY) {}
 
-shared abstract class TextBounds(shared JTextBoundsType type)
-		of logicalBounds|visualBounds {
-	string=>type.string;
-}
-shared object logicalBounds extends TextBounds(JTextBoundsType.\iLOGICAL) {}
-shared object visualBounds extends TextBounds(JTextBoundsType.\iVISUAL) {}
 
-shared abstract class TextAlignment(shared JTextAlignment type)
-		of center|justify|left|right {
-	string=>type.string;
-}
-shared object center extends TextAlignment(JTextAlignment.\iCENTER) {}
-shared object justify extends TextAlignment(JTextAlignment.\iJUSTIFY) {}
-shared object left extends TextAlignment(JTextAlignment.\iLEFT) {}
-shared object right extends TextAlignment(JTextAlignment.\iRIGHT) {}
+

@@ -1,17 +1,28 @@
 import ceylonfx.binding {
 	ReadableProperty,
-	booleanReadOnlyWrappedProperty, Unset, unset
+	booleanReadOnlyWrappedProperty,
+	Unset,
+	unset,
+	JObjectProp,
+	Property,
+	JavaWrappedProperty
 }
-import ceylonfx.collections { ObservableList }
+import ceylonfx.geometry {
+	Point3D,
+	Location
+}
+import ceylonfx.scene.effect {
+	BlendMode,
+	Effect
+}
 
 import javafx.scene {
-	JParent=Parent, JNode=Node
+	JParent=Parent,
+	JNode=Node
 }
-import ceylonfx.scene.effect { BlendMode, Effect }
-import ceylonfx.geometry { Point3D, Location }
 
 
-shared abstract class Parent<out Delegate>(
+shared abstract class Parent<out Delegate = JParent>(
 	
 	// From  CeylonFxAdapter
 	Delegate delegate,
@@ -43,4 +54,10 @@ shared abstract class Parent<out Delegate>(
 	
 	shared ReadableProperty<Boolean> needsLayoutProperty = booleanReadOnlyWrappedProperty(delegate.needsLayoutProperty());
 
+}
+
+class ParentGeneric(JParent delegate) extends Parent(delegate) {}
+
+shared Property<Parent> parentWrappedProperty(JObjectProp<JParent> jProp, Parent|Unset initValue = unset) {
+	return JavaWrappedProperty(jProp, Parent<JParent>.delegate, ParentGeneric, initValue);
 }
