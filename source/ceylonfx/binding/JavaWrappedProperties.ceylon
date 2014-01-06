@@ -11,13 +11,10 @@ import ceylonfx.application.java {
 	Converters {
 		toIntegerObjectProperty,
 		toIntegerReadOnlyObjectProperty,
-		toBooleanObjectProperty,
-		toBooleanReadOnlyObjectProperty,
 		toDoubleObjectProperty,
 		toDoubleReadOnlyObjectProperty
 	}
 }
-
 import ceylonfx.utils {
 	booleanC2J,
 	booleanJ2C,
@@ -25,7 +22,7 @@ import ceylonfx.utils {
 	floatJ2C,
 	integerC2J,
 	integerJ2C,
-	stringJ2C, 
+	stringJ2C,
 	doubleJ2C,
 	doubleC2J
 }
@@ -38,22 +35,17 @@ import java.lang {
 	JDouble=Double
 }
 
+import javafx.beans.property {
+	JIntegerProperty=IntegerProperty,
+	JDoubleProperty=DoubleProperty,
+	JReadOnlyIntegerProperty=ReadOnlyIntegerProperty,
+	JReadOnlyDoubleProperty=ReadOnlyDoubleProperty
+}
 import javafx.beans.\ivalue {
 	JWritableValue=WritableValue,
 	JObservableValue=ObservableValue,
 	JChangeListener=ChangeListener
 }
-import javafx.beans.property {
-	 JIntegerProperty = IntegerProperty, 
-	 JDoubleProperty = DoubleProperty, 
-	 JProperty = Property,
-JReadOnlyIntegerProperty = ReadOnlyIntegerProperty,
-JReadOnlyDoubleProperty = ReadOnlyDoubleProperty,
-JReadOnlyFloatProperty = ReadOnlyFloatProperty,
-JReadOnlyBooleanProperty = ReadOnlyBooleanProperty,
-JReadOnlyStringProperty = ReadOnlyStringProperty,
-JReadOnlyObjectProperty = ReadOnlyObjectProperty, BooleanProperty
- }
 
 
 see (`value unset`)

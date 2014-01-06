@@ -1,15 +1,34 @@
-import ceylonfx.application {
-	CeylonFxAdapter
+import ceylonfx.binding {
+	Unset,
+	unset,
+	ReadableProperty,
+	integerReadOnlyWrappedProperty,
+	Property,
+	stringWrappedProperty,
+	booleanWrappedProperty,
+	stringReadOnlyWrappedProperty
+}
+import ceylonfx.geometry {
+	Point3D,
+	Location
+}
+import ceylonfx.scene {
+	Node,
+	CacheHint,
+	Cursor,
+	DepthTest
+}
+import ceylonfx.scene.effect {
+	BlendMode,
+	Effect
 }
 
+import javafx.scene {
+	JNode=Node
+}
 import javafx.scene.control {
 	JTextInputControl=TextInputControl
 }
-import ceylonfx.binding { Unset, unset, ReadableProperty, integerReadOnlyWrappedProperty, Property, stringWrappedProperty, booleanWrappedProperty, stringReadOnlyWrappedProperty }
-import ceylonfx.scene.effect { BlendMode, Effect }
-import ceylonfx.scene { Node, CacheHint, Cursor, DepthTest }
-import javafx.scene { JNode=Node }
-import ceylonfx.geometry { Point3D, Location }
 
 shared abstract class TextInputControl<out Delegate = JTextInputControl>(
 	

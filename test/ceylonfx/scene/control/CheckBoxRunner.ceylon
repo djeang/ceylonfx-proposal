@@ -13,15 +13,13 @@ import ceylonfx.scene.paint {
 import ceylonfx.stage {
 	Stage
 }
-import ceylonfx.scene.effect { greenBlendMode }
-import ceylonfx.scene.text { bold, font }
 
 shared void run() 
 		=> CeylonFX {
 	args = process.arguments;
 	Stage {
 		() => Scene {
-			//dimension = [50.0, 50.0];
+			dimension = [50.0, 50.0];
 			root = VBox {
 				children = [
 					CheckBox{

@@ -5,16 +5,13 @@ import ceylon.interop.java {
 import ceylonfx.application.java {
 	TypeConverter
 }
-import ceylonfx.scene.paint {
-	Paint
-}
 
 import java.lang {
 	Runnable,
 	Bool=Boolean,
 	JString=String,
 	JFloat=Float,
-	JInt=Integer, 
+	JInt=Integer,
 	JDouble=Double
 }
 import java.util.concurrent {
@@ -24,10 +21,6 @@ import java.util.concurrent {
 import javafx.application {
 	Platform
 }
-import javafx.scene.paint {
-	JPaint=Paint
-}
-import ceylonfx.binding { integerReadOnlyWrappedProperty }
 
 shared object booleanC2J satisfies TypeConverter<Boolean, Bool> {
 	shared actual Bool convert(Boolean from) => from then Bool.\iTRUE else Bool.\iFALSE;

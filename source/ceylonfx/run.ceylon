@@ -25,7 +25,6 @@ import ceylonfx.scene.text {
 import ceylonfx.stage {
 	Stage
 }
-import ceylonfx.binding { Unset }
 
 shared void run() 
 		=> CeylonFX {

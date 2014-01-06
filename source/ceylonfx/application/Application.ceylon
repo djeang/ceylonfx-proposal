@@ -1,4 +1,8 @@
 
+import ceylon.language {
+	shared
+}
+
 import ceylonfx.application.java {
 	JavaApp {
 		initialize
@@ -10,7 +14,6 @@ import ceylonfx.stage {
 import ceylonfx.utils {
 	doInFxThread
 }
-import ceylon.language.meta.model { Type }
 
 "Application class which is the root of all CeylonFX applications."
 shared class CeylonFX(stage, Boolean showNow = true, String?* args) {
