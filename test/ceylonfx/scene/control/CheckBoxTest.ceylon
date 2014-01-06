@@ -2,36 +2,21 @@ import ceylon.test {
 	...
 }
 
-import ceylonfx.binding {
-	bindConverting
-}
-import ceylonfx.scene.paint { red }
-import ceylonfx.scene.control { CheckBox }
-
-shared test void propertiesCanBeBound() {
-	value checkBox = CheckBox();
+shared test void selectedIsBounded() {
+	value checkBox = CheckBox{selected = true;};
+	assertTrue(checkBox.selectedProperty.get);
 	
-	bindConverting(checkBox.selectedProperty, checkBox.textProperty, (Boolean selected) =>
-			selected then "on" else "off");
+	value checkBox2 = CheckBox{selected = false;};
+	assertFalse(checkBox2.selectedProperty.get);
+	checkBox2.selectedProperty.set(true);
+	assertTrue(checkBox2.selectedProperty.get);
+	variable Boolean bool = false;
+	Anything run(Boolean val) => bool = true;
+	checkBox2.selectedProperty.onChange(run);
+	checkBox2.selectedProperty.set(false);
+	assertTrue(bool);
 	
-	checkBox.selectedProperty.set(true);
-	assertEquals(checkBox.textProperty.get, "on");
-	checkBox.selectedProperty.set(false);
-	assertEquals(checkBox.textProperty.get, "off");
 }
 
-shared test void propertiesConnectedToDelegate() {
-	value checkBox = CheckBox();
-	
-	checkBox.selectedProperty.set(true);
-	assertEquals(checkBox.delegate.selected, true);
-	checkBox.selectedProperty.set(false);
-	assertEquals(checkBox.delegate.selected, false);
-	
-	checkBox.textProperty.set("Hi");
-	assertEquals(checkBox.delegate.text, "Hi");
-	
-	checkBox.textFillProperty.set(red);
-	assertEquals(checkBox.delegate.textFill, red.delegate);
-}
+
 

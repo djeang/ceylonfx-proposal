@@ -45,7 +45,7 @@ import javafx.scene.text {
 shared class Text(
 	
 	// From  CeylonFxAdapter
-	JText delegate,
+	JText delegate = JText(),
 	
 	// From Node
 	String|Unset id = unset,

@@ -12,21 +12,21 @@ import ceylonfx.stage {
 }
 import ceylonfx.geometry { topRight }
 
-shared void runTextFields() 
-		=> CeylonFX {
-	args = process.arguments;
-	Stage {
-		() => Scene {
-			dimension = [50.0, 50.0];
-			VBox {
-				TextField { 
-					editable = true; 
-					promptText = "Enter text here"; 
-					text = "nothing"; 
-					alignement = topRight;
-					//onAction = nothing; 
-					prefColumCount = 10; }
-			}
-		};
-	};
-};
+//shared void runTextFields() 
+//		=> CeylonFX {
+//	args = process.arguments;
+//	Stage {
+//		() => Scene {
+//			dimension = [50.0, 50.0];
+//			VBox {
+//				TextField { 
+//					editable = true; 
+//					promptText = "Enter text here"; 
+//					text = "nothing"; 
+//					alignement = topRight;
+//					//onAction = nothing; 
+//					prefColumCount = 10; }
+//			}
+//		};
+//	};
+//};

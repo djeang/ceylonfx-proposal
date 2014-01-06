@@ -63,7 +63,7 @@ shared class VBox (
 	{Node*}|Unset children = unset,
 	
 	// From VBox
-	Position|Unset alignement = unset,
+	Position|Unset alignment = unset,
 	Boolean|Unset fillWidth = unset,
 	Float|Unset spacing = unset,
 	Boolean|Unset vGrow = unset)

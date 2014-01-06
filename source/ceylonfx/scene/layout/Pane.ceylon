@@ -3,7 +3,7 @@ import ceylonfx.binding {
 	unset
 }
 import ceylonfx.collections {
-	ObservableList
+	ObservableList, WrappedObservableList
 }
 import ceylonfx.geometry {
 	Insets,
@@ -73,7 +73,7 @@ shared abstract class Pane<out Delegate>(
 		
 		given Delegate satisfies JPane {
 	
-	shared ObservableList<Node, JNode> childList = ObservableList(delegate.children, Node<JNode>.delegate, GenericNode);
+	shared ObservableList<Node> childList = WrappedObservableList<Node, JNode>(delegate.children, Node<JNode>.delegate, GenericNode);
 	
 	if (is {Node*} children) {
 		childList.setAll(children);

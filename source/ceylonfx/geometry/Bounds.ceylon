@@ -1,33 +1,29 @@
+import ceylon.language {
+	shared,
+	abstract,
+	Float
+}
+
 import ceylonfx.application {
 	CeylonFxAdapter
 }
-
+import ceylonfx.binding {
+	JObjectProp,
+	Unset,
+	unset,
+	Property,
+	JavaWrappedProperty,
+	JavaWrappedReadOnlyProperty,
+	ReadableProperty
+}
+import javafx.beans.\ivalue {
+	JObservableValue=ObservableValue
+}
 import javafx.geometry {
-	JInsets=Insets,
 	JBounds=Bounds,
 	JBBox=BoundingBox
 }
-import javafx.beans.\ivalue { JObservableValue = ObservableValue }
-import ceylonfx.binding { JObjectProp, Unset, unset, Property, JavaWrappedProperty, JavaWrappedReadOnlyProperty, ReadableProperty }
 
-"A set of inside offsets for the 4 side of a rectangular area"
-shared class Insets(
-	shared Float top = 0.0,
-	shared Float right = 0.0,
-	shared Float bottom = 0.0,
-	shared Float left = 0.0) {
-	
-	shared JInsets delegate => JInsets(top, right, bottom, left);
-	
-}
-
-
-shared Property<Insets> insetsWrappedProperty(JObjectProp<JInsets> jprop, Insets|Unset initValue = unset) {
-	Insets fromJava(JInsets jInsets) {
-		return Insets(jInsets.top, jInsets.right, jInsets.bottom, jInsets.left);
-	}
-	return JavaWrappedProperty(jprop, Insets.delegate, fromJava, initValue);
-}
 
 "The base class for objects that are used to describe the bounds of a node or other scene graph object."
 shared abstract class Bounds<out Delegate = JBounds>(

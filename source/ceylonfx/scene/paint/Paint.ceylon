@@ -28,7 +28,7 @@ import javafx.scene.paint {
 
 shared alias Stop => [Float, Color];
 
-shared abstract class Paint<Delegate = JPaint>(Delegate delegate) 
+shared abstract class Paint<out Delegate = JPaint>(Delegate delegate) 
 		extends CeylonFxAdapter<Delegate>(delegate)
 		given Delegate satisfies JPaint {}
 

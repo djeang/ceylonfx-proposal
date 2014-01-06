@@ -13,17 +13,31 @@ import ceylonfx.scene.paint {
 import ceylonfx.stage {
 	Stage
 }
-import ceylonfx.scene.control { CheckBox }
+import ceylonfx.scene.effect { greenBlendMode }
+import ceylonfx.scene.text { bold, font }
 
-shared void run2() 
+shared void run() 
 		=> CeylonFX {
 	args = process.arguments;
 	Stage {
 		() => Scene {
-			dimension = [50.0, 50.0];
-			VBox {
-				CheckBox(true,"My init text 2", true, red)
-			}
+			//dimension = [50.0, 50.0];
+			root = VBox {
+				children = [
+					CheckBox{
+						selected =  true;
+						elipsisString = "...";
+						underline = true;
+						text = "My text";
+						allowIndeterminate = true;
+						textFill = red;
+						tooltip = Tooltip {
+							text = "My Tooltip Text";
+						};
+					},
+					CheckBox{}
+				];
+			};
 		};
 	};
 };

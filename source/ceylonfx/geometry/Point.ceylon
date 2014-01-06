@@ -9,10 +9,9 @@ import javafx.geometry {
 "A 3D geometric point that represents the x, y, z coordinates."
 shared class Point3D(
 	shared Float x = 0.0,
-	shared Float y = 0.0,
-	shared Float z = 0.0,
-	JPoint3D delegate = JPoint3D(x, y, z) )
-		 extends CeylonFxAdapter<JPoint3D>(delegate) {
+	shared Float y = 0.0, 
+	shared Float z = 0.0)
+		 extends CeylonFxAdapter<JPoint3D>(JPoint3D(x, y, z)) {
 
 	"Computes the distance between this point and the given point."
 	shared Float distance(Point3D point) {
